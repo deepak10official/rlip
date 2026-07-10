@@ -822,25 +822,25 @@ function buildPrintTemplate(report) {
   const findings = report.validation_report?.findings || [];
   const totalVariance = findings.reduce((sum, finding) => sum + Math.abs(finding.variance_amount || 0), 0);
   
-  return \`
+  return `
     <div style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; padding: 20px; color: #1f2937; line-height: 1.5;">
       <div style="text-align: center; border-bottom: 2px solid #e5e7eb; padding-bottom: 20px; margin-bottom: 30px;">
         <h1 style="margin: 0; font-size: 28px; color: #111827; letter-spacing: -0.5px;">RLIP Audit Report</h1>
-        <p style="margin: 8px 0 0; color: #6b7280; font-size: 14px;">Generated on \${new Date().toLocaleDateString()} • Billing Type: \${report.billing_type}</p>
+        <p style="margin: 8px 0 0; color: #6b7280; font-size: 14px;">Generated on ${new Date().toLocaleDateString()} • Billing Type: ${report.billing_type}</p>
       </div>
 
       <div style="margin-bottom: 30px;">
         <h2 style="font-size: 18px; color: #111827; border-bottom: 1px solid #e5e7eb; padding-bottom: 8px; margin-bottom: 16px;">Executive Summary</h2>
         <div style="display: flex; gap: 40px; margin-bottom: 16px;">
-          <div><strong>Status:</strong> <span style="color: \${report.status === 'valid' ? '#10b981' : report.status === 'invalid' ? '#ef4444' : '#f59e0b'}; text-transform: uppercase;">\${report.status}</span></div>
-          <div><strong>Total Variance Impact:</strong> <span style="color: #ef4444;">$\${totalVariance.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</span></div>
+          <div><strong>Status:</strong> <span style="color: ${report.status === 'valid' ? '#10b981' : report.status === 'invalid' ? '#ef4444' : '#f59e0b'}; text-transform: uppercase;">${report.status}</span></div>
+          <div><strong>Total Variance Impact:</strong> <span style="color: #ef4444;">$${totalVariance.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</span></div>
         </div>
-        <p style="color: #4b5563; margin: 0;">\${escapeHtml(report.executive_summary || "")}</p>
+        <p style="color: #4b5563; margin: 0;">${escapeHtml(report.executive_summary || "")}</p>
       </div>
 
       <div style="margin-bottom: 30px;">
         <h2 style="font-size: 18px; color: #111827; border-bottom: 1px solid #e5e7eb; padding-bottom: 8px; margin-bottom: 16px;">Key Findings</h2>
-        \${findings.length > 0 ? \`
+        ${findings.length > 0 ? `
         <table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 14px;">
           <thead>
             <tr style="background-color: #f9fafb;">
@@ -851,37 +851,37 @@ function buildPrintTemplate(report) {
             </tr>
           </thead>
           <tbody>
-            \${findings.map(f => \`
+            ${findings.map(f => `
               <tr>
-                <td style="border: 1px solid #e5e7eb; padding: 12px; text-transform: capitalize; color: \${f.severity === 'high' ? '#ef4444' : f.severity === 'medium' ? '#f59e0b' : '#3b82f6'}; font-weight: 600;">\${f.severity}</td>
-                <td style="border: 1px solid #e5e7eb; padding: 12px; color: #374151;">\${escapeHtml(f.issue_type)}</td>
-                <td style="border: 1px solid #e5e7eb; padding: 12px; text-align: right; color: #111827;">$\${(f.variance_amount || 0).toLocaleString(undefined, {minimumFractionDigits: 2})}</td>
-                <td style="border: 1px solid #e5e7eb; padding: 12px; color: #4b5563;">\${escapeHtml(f.description)}</td>
+                <td style="border: 1px solid #e5e7eb; padding: 12px; text-transform: capitalize; color: ${f.severity === 'high' ? '#ef4444' : f.severity === 'medium' ? '#f59e0b' : '#3b82f6'}; font-weight: 600;">${f.severity}</td>
+                <td style="border: 1px solid #e5e7eb; padding: 12px; color: #374151;">${escapeHtml(f.issue_type)}</td>
+                <td style="border: 1px solid #e5e7eb; padding: 12px; text-align: right; color: #111827;">$${(f.variance_amount || 0).toLocaleString(undefined, {minimumFractionDigits: 2})}</td>
+                <td style="border: 1px solid #e5e7eb; padding: 12px; color: #4b5563;">${escapeHtml(f.description)}</td>
               </tr>
-            \`).join('')}
+            `).join('')}
           </tbody>
         </table>
-        \` : '<p style="color: #6b7280;">No findings detected.</p>'}
+        ` : '<p style="color: #6b7280;">No findings detected.</p>'}
       </div>
 
       <div style="margin-bottom: 30px;">
         <h2 style="font-size: 18px; color: #111827; border-bottom: 1px solid #e5e7eb; padding-bottom: 8px; margin-bottom: 16px;">Payment Reconciliation</h2>
         <div style="display: flex; gap: 40px; margin-bottom: 16px;">
-          <div><strong>Status:</strong> <span style="text-transform: uppercase; color: #374151;">\${(report.payment_summary?.status || 'Unknown')}</span></div>
-          <div><strong>Paid Amount:</strong> <span style="color: #10b981;">$\${(report.payment_summary?.paid_amount || 0).toLocaleString(undefined, {minimumFractionDigits: 2})}</span></div>
-          <div><strong>Pending Amount:</strong> <span style="color: #f59e0b;">$\${(report.payment_summary?.pending_amount || 0).toLocaleString(undefined, {minimumFractionDigits: 2})}</span></div>
+          <div><strong>Status:</strong> <span style="text-transform: uppercase; color: #374151;">${(report.payment_summary?.status || 'Unknown')}</span></div>
+          <div><strong>Paid Amount:</strong> <span style="color: #10b981;">$${(report.payment_summary?.paid_amount || 0).toLocaleString(undefined, {minimumFractionDigits: 2})}</span></div>
+          <div><strong>Pending Amount:</strong> <span style="color: #f59e0b;">$${(report.payment_summary?.pending_amount || 0).toLocaleString(undefined, {minimumFractionDigits: 2})}</span></div>
         </div>
-        <p style="color: #4b5563; margin: 0;">\${escapeHtml(report.payment_summary?.reasoning || "")}</p>
+        <p style="color: #4b5563; margin: 0;">${escapeHtml(report.payment_summary?.reasoning || "")}</p>
       </div>
 
       <div style="margin-bottom: 30px;">
         <h2 style="font-size: 18px; color: #111827; border-bottom: 1px solid #e5e7eb; padding-bottom: 8px; margin-bottom: 16px;">Recommended Next Actions</h2>
         <ul style="color: #4b5563; padding-left: 20px; margin: 0;">
-          \${(report.next_actions || []).map(action => \`<li style="margin-bottom: 8px;">\${escapeHtml(action)}</li>\`).join('')}
+          ${(report.next_actions || []).map(action => `<li style="margin-bottom: 8px;">${escapeHtml(action)}</li>`).join('')}
         </ul>
       </div>
     </div>
-  \`;
+  `;
 }
 
 function renderPaymentIssues(issues) {
