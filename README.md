@@ -42,40 +42,33 @@ OPENAI_MODEL=gpt-4o
 OPENAI_FAST_MODEL=gpt-4o-mini
 ```
 
-## Run Streamlit
+## Run Application
 
-Start the FastAPI backend first:
+You need two terminal windows to run both the backend and the frontend.
+
+**Terminal 1: Start the FastAPI backend**
 
 ```bash
 source .venv/bin/activate
 uvicorn backend.api:app --host 127.0.0.1 --port 8000 --reload
 ```
 
-Then start the Streamlit frontend in another terminal:
+*The backend will be available at `http://127.0.0.1:8000`.*
+
+**Terminal 2: Start the Frontend**
+
+Serve the custom HTML/JS frontend using Python's built-in HTTP server:
 
 ```bash
-source .venv/bin/activate
-streamlit run frontend/streamlit_app.py
+python -m http.server 8080 --directory frontend
 ```
 
-Open:
+Open your browser and navigate to:
 
 ```text
-http://127.0.0.1:8501
+http://127.0.0.1:8080
 ```
 
-The frontend calls the backend at `http://127.0.0.1:8000` by default. Override with:
-
-```bash
-BACKEND_API_URL=http://127.0.0.1:8000 streamlit run frontend/streamlit_app.py
-```
-
-## Run FastAPI Only
-
-```bash
-source .venv/bin/activate
-uvicorn backend.api:app --host 127.0.0.1 --port 8000 --reload
-```
 
 Useful API endpoints:
 
