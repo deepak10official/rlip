@@ -2152,11 +2152,13 @@ body.modal-open {
 .fc-fork {
   width: 480px;
   height: 30px;
-  border-top: 2px solid var(--glass-border-hover);
-  border-left: 2px solid var(--glass-border-hover);
-  border-right: 2px solid var(--glass-border-hover);
-  margin-top: 4px;
+  border-top: 2px solid var(--accent-blue);
+  border-left: 2px solid var(--accent-blue);
+  border-right: 2px solid var(--accent-blue);
+  border-radius: 6px 6px 0 0;
+  margin-top: 30px;
   position: relative;
+  box-shadow: inset 0px 4px 10px -8px var(--accent-blue), 0px -4px 10px -8px var(--accent-blue);
 }
 
 .fc-fork::before {
@@ -2166,18 +2168,48 @@ body.modal-open {
   left: 50%;
   width: 2px;
   height: 30px;
-  background: var(--glass-border-hover);
+  background-image: linear-gradient(to bottom, var(--accent-blue) 50%, rgba(255,255,255,0.05) 50%);
+  background-size: 2px 12px;
+  animation: flowMarch 0.8s linear infinite;
+  transform: translateX(-50%);
+}
+
+.fc-fork::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 2px;
+  height: 30px;
+  background-image: linear-gradient(to bottom, var(--accent-blue) 50%, rgba(255,255,255,0.05) 50%);
+  background-size: 2px 12px;
+  animation: flowMarch 0.8s linear infinite;
   transform: translateX(-50%);
 }
 
 .fc-join {
   width: 480px;
   height: 30px;
-  border-bottom: 2px solid var(--glass-border-hover);
-  border-left: 2px solid var(--glass-border-hover);
-  border-right: 2px solid var(--glass-border-hover);
-  margin-bottom: 4px;
+  border-bottom: 2px solid var(--accent-blue);
+  border-left: 2px solid var(--accent-blue);
+  border-right: 2px solid var(--accent-blue);
+  border-radius: 0 0 6px 6px;
+  margin-bottom: 30px;
   position: relative;
+  box-shadow: inset 0px -4px 10px -8px var(--accent-blue), 0px 4px 10px -8px var(--accent-blue);
+}
+
+.fc-join::before {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 2px;
+  height: 30px;
+  background-image: linear-gradient(to bottom, var(--accent-blue) 50%, rgba(255,255,255,0.05) 50%);
+  background-size: 2px 12px;
+  animation: flowMarch 0.8s linear infinite;
+  transform: translateX(-50%);
 }
 
 .fc-join::after {
@@ -2187,7 +2219,9 @@ body.modal-open {
   left: 50%;
   width: 2px;
   height: 30px;
-  background: var(--glass-border-hover);
+  background-image: linear-gradient(to bottom, var(--accent-blue) 50%, rgba(255,255,255,0.05) 50%);
+  background-size: 2px 12px;
+  animation: flowMarch 0.8s linear infinite;
   transform: translateX(-50%);
 }
 
