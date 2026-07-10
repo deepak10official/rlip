@@ -2125,11 +2125,18 @@ body.modal-open {
 
 .fc-arrow {
   width: 2px;
-  height: 30px;
-  background: var(--glass-border-hover);
+  height: 44px;
+  background-image: linear-gradient(to bottom, var(--accent-blue) 50%, rgba(255,255,255,0.05) 50%);
+  background-size: 2px 12px;
+  animation: flowMarch 0.8s linear infinite;
   position: relative;
-  margin: 4px 0;
+  margin: 12px 0;
   z-index: 1;
+}
+
+@keyframes flowMarch {
+  from { background-position: 0 0; }
+  to { background-position: 0 12px; }
 }
 
 .fc-arrow::after {
@@ -2139,7 +2146,7 @@ body.modal-open {
   left: -4px;
   border-width: 5px 5px 0 5px;
   border-style: solid;
-  border-color: var(--glass-border-hover) transparent transparent transparent;
+  border-color: var(--accent-blue) transparent transparent transparent;
 }
 
 .fc-fork {
