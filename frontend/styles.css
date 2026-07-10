@@ -38,17 +38,22 @@
 }
 
 body.light-theme {
-  --bg-primary: #f0f2f5;
+  --bg-primary: #f8f9fa;
   --bg-secondary: #ffffff;
-  --bg-tertiary: #e2e8f0;
-  --glass-bg: rgba(255, 255, 255, 0.6);
-  --glass-bg-strong: rgba(255, 255, 255, 0.9);
-  --glass-border: rgba(0, 0, 0, 0.08);
-  --glass-border-hover: rgba(0, 0, 0, 0.15);
-  --text-primary: #111827;
-  --text-secondary: #4b5563;
-  --text-tertiary: #9ca3af;
-  --shadow: 0 8px 32px rgba(0, 0, 0, 0.06), 0 0 0 1px rgba(0, 0, 0, 0.05);
+  --bg-tertiary: #f1f3f5;
+  --glass-bg: rgba(255, 255, 255, 0.75);
+  --glass-bg-strong: rgba(255, 255, 255, 0.95);
+  --glass-border: rgba(0, 0, 0, 0.04);
+  --glass-border-hover: rgba(0, 0, 0, 0.12);
+  --text-primary: #0f172a;
+  --text-secondary: #475569;
+  --text-tertiary: #94a3b8;
+  --shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(0, 0, 0, 0.02);
+  background:
+    radial-gradient(ellipse at 20% 50%, rgba(102, 126, 234, 0.05), transparent 50%),
+    radial-gradient(ellipse at 80% 20%, rgba(118, 75, 162, 0.04), transparent 50%),
+    radial-gradient(ellipse at 50% 80%, rgba(0, 212, 255, 0.03), transparent 50%),
+    var(--bg-primary);
 }
 
 *,
