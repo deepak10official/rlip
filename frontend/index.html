@@ -255,108 +255,73 @@
       <div class="view" id="view-pipeline">
         <div class="page-header">
           <h1>⚗️ Core Processing Pipeline</h1>
-          <p>A structured view of how billing documents move through extraction, validation, reconciliation, and final reporting.</p>
+          <p>The internal workflow isolating inputs, guardrails, agents, and structured outputs.</p>
         </div>
-
-        <section class="pipeline-hero reveal visible">
-          <div>
-            <div class="pipeline-eyebrow">Workflow Map</div>
-            <h2>One audit packet becomes one governed validation report.</h2>
-            <p>Each stage owns a narrow responsibility, passes structured context forward, and keeps invoice validity separate from payment collection issues.</p>
+        
+        <div class="flowchart-container reveal visible">
+          
+          <!-- 1. Inputs -->
+          <div class="fc-group fc-inputs">
+            <div class="fc-group-title">1. Inputs</div>
+            <div class="fc-row">
+              <div class="fc-node">📄 Contracts</div>
+              <div class="fc-node">🧾 Invoices</div>
+              <div class="fc-node">🔍 Evidence</div>
+              <div class="fc-node">💳 Payment</div>
+            </div>
           </div>
-          <div class="pipeline-output-summary">
-            <span class="pipeline-summary-label">Output Contract</span>
-            <strong>Pydantic JSON</strong>
-            <small>valid | invalid | needs_review</small>
+          
+          <div class="fc-arrow"></div>
+          
+          <!-- 2. Guardrails -->
+          <div class="fc-node fc-guardrails">
+            🛡️ 2. Guardrails Layer
           </div>
-        </section>
-
-        <div class="pipeline-stage-grid reveal visible">
-          <article class="pipeline-stage-card input-stage">
-            <div class="pipeline-stage-header">
-              <span class="pipeline-stage-number">01</span>
-              <div>
-                <h3>Collect Inputs</h3>
-                <p>Normalize every uploaded document into a single audit packet.</p>
+          
+          <div class="fc-arrow"></div>
+          
+          <!-- 3. Agents -->
+          <div class="fc-group fc-agents">
+            <div class="fc-group-title">3. Agentic Validation System</div>
+            
+            <div class="fc-node fc-agent">👁️ Vision Document Reader</div>
+            <div class="fc-arrow"></div>
+            
+            <div class="fc-node fc-agent">📥 Document Intake Agent</div>
+            
+            <div class="fc-fork"></div>
+            <div class="fc-row fc-extraction">
+              <div class="fc-node fc-agent">📜 Contract Rule Agent</div>
+              <div class="fc-node fc-agent">🔎 Evidence Validation Agent</div>
+              <div class="fc-node fc-agent">💵 Payment Reconciliation Agent</div>
+            </div>
+            <div class="fc-join"></div>
+            
+            <div class="fc-node fc-agent">🧾 Invoice Validation Agent</div>
+            
+            <div class="fc-decision-split">
+              <div class="fc-decision-branch">
+                <div class="fc-label fc-invalid">If Invalid ❌</div>
+                <div class="fc-node fc-agent fc-correction">✏️ Corrected Invoice Generation Agent</div>
+                <div class="fc-arrow"></div>
+              </div>
+              <div class="fc-decision-branch">
+                <div class="fc-label fc-valid">If Valid ✅</div>
+                <div class="fc-line-straight"></div>
               </div>
             </div>
-            <div class="pipeline-node-list">
-              <div class="pipeline-node"><span>📄</span><div><strong>Contracts</strong><small>Terms, rates, acceptance rules</small></div></div>
-              <div class="pipeline-node"><span>🧾</span><div><strong>Invoices</strong><small>Line items, quantities, totals</small></div></div>
-              <div class="pipeline-node"><span>🔍</span><div><strong>Evidence</strong><small>Usage, delivery, approvals</small></div></div>
-              <div class="pipeline-node"><span>💳</span><div><strong>Payments</strong><small>Cash applied and open balances</small></div></div>
-            </div>
-          </article>
-
-          <article class="pipeline-stage-card guard-stage">
-            <div class="pipeline-stage-header">
-              <span class="pipeline-stage-number">02</span>
-              <div>
-                <h3>Apply Guardrails</h3>
-                <p>Check document shape before any agent makes a billing call.</p>
-              </div>
-            </div>
-            <div class="pipeline-check-list">
-              <span>Required file buckets present</span>
-              <span>Billing type selected</span>
-              <span>Readable text and previews prepared</span>
-              <span>Schema-compatible context created</span>
-            </div>
-          </article>
-
-          <article class="pipeline-stage-card agent-stage">
-            <div class="pipeline-stage-header">
-              <span class="pipeline-stage-number">03</span>
-              <div>
-                <h3>Run Specialist Agents</h3>
-                <p>Extract facts, validate evidence, and reconcile payments in parallel lanes.</p>
-              </div>
-            </div>
-            <div class="pipeline-agent-stack">
-              <div class="pipeline-agent-node primary">👁️ Vision Document Reader</div>
-              <div class="pipeline-agent-row">
-                <div class="pipeline-agent-node">📥 Document Intake</div>
-                <div class="pipeline-agent-node">📜 Contract Rules</div>
-              </div>
-              <div class="pipeline-agent-row">
-                <div class="pipeline-agent-node">🔎 Evidence Validation</div>
-                <div class="pipeline-agent-node">💵 Payment Reconciliation</div>
-              </div>
-            </div>
-          </article>
-
-          <article class="pipeline-stage-card decision-stage">
-            <div class="pipeline-stage-header">
-              <span class="pipeline-stage-number">04</span>
-              <div>
-                <h3>Decide and Report</h3>
-                <p>Separate invoice-generation accuracy from cash application status.</p>
-              </div>
-            </div>
-            <div class="pipeline-decision-flow">
-              <div class="pipeline-agent-node highlight">🧾 Invoice Validation</div>
-              <div class="pipeline-status-row">
-                <span class="pipeline-status valid">Valid</span>
-                <span class="pipeline-status invalid">Invalid</span>
-                <span class="pipeline-status review">Needs Review</span>
-              </div>
-              <div class="pipeline-agent-node report">📊 Final Report</div>
-            </div>
-          </article>
+            
+            <div class="fc-node fc-agent">📊 Final Report Agent</div>
+          </div>
+          
+          <div class="fc-arrow"></div>
+          
+          <!-- 4. Output -->
+          <div class="fc-node fc-output">
+            ✨ 4. Structured Output Models (Pydantic)
+          </div>
+          
         </div>
-
-        <section class="pipeline-footer-panel reveal visible">
-          <div>
-            <div class="pipeline-eyebrow">Final Artifact</div>
-            <h3>Audit-ready findings, reconciliation notes, and next actions.</h3>
-          </div>
-          <div class="pipeline-artifact-grid">
-            <span>Executive summary</span>
-            <span>Severity-ranked findings</span>
-            <span>Payment reconciliation</span>
-            <span>Guardrail notes</span>
-          </div>
-        </section>
       </div>
 
     </main>
