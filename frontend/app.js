@@ -483,7 +483,7 @@ function renderDropzones() {
       ${DOCUMENT_ZONES.map((zone) => renderDropzone(zone)).join("")}
     </div>
     <div class="upload-actions">
-      <button class="btn btn-primary btn-lg" id="btn-upload-audit" onclick="runUploadAudit()">🚀 Run Upload Audit</button>
+      <button class="btn btn-primary btn-lg" id="btn-upload-audit" onclick="runUploadAudit()">🚀 Run Invoice Audit</button>
       <span>${Object.values(state.uploadFiles).flat().length} files selected</span>
     </div>
   `;
@@ -587,7 +587,7 @@ async function executeAudit(auditFn) {
     state.isAuditing = false;
     if (button) {
       button.disabled = false;
-      button.innerHTML = "🚀 Run Upload Audit";
+      button.innerHTML = "🚀 Run Invoice Audit";
     }
   }
 }
