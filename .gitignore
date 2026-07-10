@@ -5,5 +5,3 @@ __pycache__/
 .streamlit/
 .env
 .venv/
-backend/results/*.json
-!backend/results/.gitkeep

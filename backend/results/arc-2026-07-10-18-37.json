@@ -1,0 +1,92 @@
+{
+  "id": "arc-2026-07-10-18-37",
+  "billing_type": "arc",
+  "completed_at": "2026-07-10T18:37:58.235997+05:30",
+  "status": "valid",
+  "finding_count": 3,
+  "total_variance": 0.0,
+  "document_count": 4,
+  "result": {
+    "audit_id": "arc-2026-07-10-18-37",
+    "completed_at": "2026-07-10T18:37:58.235997+05:30",
+    "status": "valid",
+    "billing_type": "arc",
+    "executive_summary": "Invoice E9932206339 for OmniRetail’s July 2026 ARC monthly floor is valid. The contract authorizes an ARC model with a $840,000 annual recurring commitment billed at a $70,000 monthly floor. The invoice bills $70,000 for July 2026, uses Morgan Hale as the attention line, and the ARC ledger supports a $70,000 monthly floor approved by Morgan Hale. Payment reconciliation is also clean: $70,000 was received and applied, with $0 open balance.",
+    "validation_report": {
+      "status": "valid",
+      "billing_type": "arc",
+      "summary": "The invoice correctly bills the July 2026 ARC monthly floor. Under the ARC rule set and contract, billing is supported when invoice amounts match same-period, same-customer consumption/commitment evidence and contract pricing. The contract allows the $70,000 monthly floor, and the July ARC ledger supports the exact $70,000 floor. The ledger-only actual platform consumption of $72,800 and unused expansion support were not separately billed, which is appropriate based on the evidence.",
+      "findings": [
+        {
+          "finding_type": "matched_contract_floor",
+          "description": "Contract states Annual Recurring Commitment is $840,000 billed at a $70,000 monthly floor; invoice bills $70,000 for Digital Run ARC monthly floor, July 2026.",
+          "source_documents": [
+            "sample_contract_arc_001_omniretail.docx",
+            "inv_arc_001_omniretail.docx"
+          ],
+          "expected_value": "$70,000.00 monthly floor",
+          "actual_value": "$70,000.00 invoiced",
+          "variance_amount": 0.0,
+          "severity": "low",
+          "recommended_action": "No correction required."
+        },
+        {
+          "finding_type": "matched_billing_evidence",
+          "description": "ARC ledger lists Monthly ARC floor, quantity 1, unit price 70000, amount 70000, approved by Morgan Hale.",
+          "source_documents": [
+            "omniretail_arc_ledger_july_export_a.xlsx",
+            "inv_arc_001_omniretail.docx"
+          ],
+          "expected_value": "$70,000.00 supported floor",
+          "actual_value": "$70,000.00 invoiced",
+          "variance_amount": 0.0,
+          "severity": "low",
+          "recommended_action": "Retain ledger as invoice support."
+        },
+        {
+          "finding_type": "non_billed_ledger_only_consumption",
+          "description": "Ledger shows actual platform run consumption of $72,800 marked 'Ledger only' and 'Tracked against ARC'; the invoice did not bill this as an additional line.",
+          "source_documents": [
+            "omniretail_arc_ledger_july_export_a.xlsx",
+            "inv_arc_001_omniretail.docx"
+          ],
+          "expected_value": "No separate billing unless approved as expansion/usage above floor",
+          "actual_value": "No separate billing",
+          "variance_amount": 0.0,
+          "severity": "low",
+          "recommended_action": "No action required."
+        }
+      ],
+      "source_documents": [
+        "sample_contract_arc_001_omniretail.docx",
+        "inv_arc_001_omniretail.docx",
+        "omniretail_arc_ledger_july_export_a.xlsx"
+      ],
+      "confidence": 0.93
+    },
+    "payment_summary": {
+      "status": "valid",
+      "issues": [],
+      "paid_amount": 70000.0,
+      "pending_amount": 0.0,
+      "reasoning": "Payment record shows invoice total $70,000.00, cash received $70,000.00, cash applied $70,000.00, pending payment/cash issue $0.00, open invoice balance $0.00, and unapplied cash/credit hold $0.00. Payment OMNI-ACH-260825-01 dated 25-Aug-2026 was fully applied."
+    },
+    "corrected_invoice": null,
+    "source_documents": [
+      "sample_contract_arc_001_omniretail.docx",
+      "inv_arc_001_omniretail.docx",
+      "omniretail_arc_ledger_july_export_a.xlsx",
+      "omniretail_receivables_statement_01.docx"
+    ],
+    "guardrail_notes": [
+      "Invoice/payment contract ID C-SVC-ARC-001 differs from agreement Contract No. SVC-ARC-2026-001; however, customer, billing model, amount, period, and supporting ledger align.",
+      "Invoice references Annexure 2, which was not visible in the preview packet.",
+      "Payment status confirms collection only; invoice validity was assessed separately from payment."
+    ],
+    "next_actions": [
+      "Retain ARC ledger with the invoice support package.",
+      "Optionally document mapping between Contract No. SVC-ARC-2026-001 and Contract ID C-SVC-ARC-001 for audit traceability.",
+      "No corrected invoice is required."
+    ]
+  }
+}

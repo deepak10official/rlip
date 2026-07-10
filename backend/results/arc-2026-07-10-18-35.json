@@ -1,0 +1,83 @@
+{
+  "id": "arc-2026-07-10-18-35",
+  "billing_type": "arc",
+  "completed_at": "2026-07-10T18:35:33.796739+05:30",
+  "status": "valid",
+  "finding_count": 2,
+  "total_variance": 0.0,
+  "document_count": 4,
+  "result": {
+    "audit_id": "arc-2026-07-10-18-35",
+    "completed_at": "2026-07-10T18:35:33.796739+05:30",
+    "status": "valid",
+    "billing_type": "arc",
+    "executive_summary": "The July 2026 ARC invoice is valid. The invoice bills USD 70,000 for the Digital Run ARC monthly floor, which matches the contract monthly floor and the ARC ledger monthly floor line approved by Morgan Hale. No unsupported expansion or additional consumption charge was billed. Payment reconciliation is also clean: USD 70,000 was received and fully applied, with zero pending amount and zero open balance.",
+    "validation_report": {
+      "status": "valid",
+      "billing_type": "arc",
+      "summary": "Invoice generation passes the supplied ARC rules because the billed amount matches the supported contract pricing and billing evidence for the same customer and period. The contract authorizes an Annual Recurring Commitment of USD 840,000 billed at a monthly floor of USD 70,000, payable even if actual consumption is below the floor. The July ARC ledger supports a monthly floor line of quantity 1 at unit price 70,000 for amount 70,000, approved by Morgan Hale. The invoice bills only that monthly floor and does not bill the ledger-only actual consumption of 72,800 or the unused expansion support day.",
+      "findings": [
+        {
+          "finding_type": "supported_charge",
+          "description": "Invoice line 'Digital Run ARC monthly floor, July 2026' for USD 70,000 matches the contract monthly ARC floor of USD 70,000 and the ARC ledger monthly floor line of quantity 1, unit price 70,000, amount 70,000, approved by Morgan Hale.",
+          "source_documents": [
+            "sample_contract_arc_001_omniretail.docx",
+            "inv_arc_001_omniretail.docx",
+            "omniretail_arc_ledger_july_export_a.xlsx"
+          ],
+          "expected_value": "USD 70,000.00",
+          "actual_value": "USD 70,000.00",
+          "variance_amount": 0.0,
+          "severity": "low",
+          "recommended_action": "No correction required."
+        },
+        {
+          "finding_type": "no_unsupported_expansion_billing",
+          "description": "The ledger shows actual platform run consumption of 72,800 marked 'Ledger only' and expansion support day marked 'Not used' with amount 0. The invoice does not bill either as an additional charge above the floor.",
+          "source_documents": [
+            "inv_arc_001_omniretail.docx",
+            "omniretail_arc_ledger_july_export_a.xlsx",
+            "sample_contract_arc_001_omniretail.docx"
+          ],
+          "expected_value": "Only approved monthly floor billed unless expansion is approved",
+          "actual_value": "Only USD 70,000 monthly floor billed",
+          "variance_amount": 0.0,
+          "severity": "low",
+          "recommended_action": "No correction required."
+        }
+      ],
+      "source_documents": [
+        "sample_contract_arc_001_omniretail.docx",
+        "inv_arc_001_omniretail.docx",
+        "omniretail_arc_ledger_july_export_a.xlsx"
+      ],
+      "confidence": 0.9
+    },
+    "payment_summary": {
+      "status": "valid",
+      "issues": [],
+      "paid_amount": 70000.0,
+      "pending_amount": 0.0,
+      "reasoning": "Payment record shows invoice total USD 70,000, cash received USD 70,000, cash applied USD 70,000, pending payment/cash issue USD 0, open invoice balance USD 0, and unapplied cash/credit hold USD 0. Payment ID OMNI-ACH-260825-01 was received by ACH on 25-Aug-2026 and fully applied."
+    },
+    "corrected_invoice": null,
+    "source_documents": [
+      "inv_arc_001_omniretail.docx",
+      "sample_contract_arc_001_omniretail.docx",
+      "omniretail_arc_ledger_july_export_a.xlsx",
+      "omniretail_receivables_statement_01.docx"
+    ],
+    "guardrail_notes": [
+      "No corrected invoice is required because the invoice is valid.",
+      "The file inv_arc_001_omniretail.docx appears in the packet both as a service_agreement entry and as an invoice; visually/extracted content is invoice content.",
+      "Contract signature/execution page was not visible, although the extracted contract text states the agreement is not binding until fully executed.",
+      "Annexure 2 referenced by the invoice was not provided/visible.",
+      "Invoice Contract ID C-SVC-ARC-001 matches the payment record, while the service agreement shows Contract No. SVC-ARC-2026-001; no visible cross-reference explains the relationship."
+    ],
+    "next_actions": [
+      "Retain the ARC ledger with the invoice as required billing support.",
+      "No billing correction or credit memo needed.",
+      "Optionally obtain the fully executed contract/signature page and Annexure 2 for complete audit file documentation."
+    ]
+  }
+}
