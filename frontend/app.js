@@ -908,6 +908,7 @@ document.addEventListener("DOMContentLoaded", () => {
   router.register("upload", initUpload);
   router.register("audit", initAudit);
   router.register("results", initResults);
+  router.register("pipeline", () => {});
 
   document.querySelectorAll(".nav-item").forEach((item) => {
     item.addEventListener("click", () => {

@@ -39,6 +39,11 @@
           <span class="nav-icon">📋</span>
           <span class="nav-label">Results</span>
         </a>
+        <div style="flex-grow: 1;"></div>
+        <a class="nav-item" data-route="pipeline" style="min-height: 36px; opacity: 0.7; border-top: 1px solid var(--glass-border); border-radius: 0; padding-top: 10px; margin-top: 10px;">
+          <span class="nav-icon" style="font-size: 14px;">⚗️</span>
+          <span class="nav-label" style="font-size: 12px; text-transform: uppercase; font-weight: 800; letter-spacing: 1px;">Pipeline</span>
+        </a>
       </nav>
 
       <div class="sidebar-footer">
@@ -244,6 +249,43 @@
           <p>Detailed findings, payment reconciliation, and corrected invoice drafts.</p>
         </div>
         <div id="results-content"></div>
+      <!-- ── Pipeline ─────────────────────────────────────────── -->
+      <div class="view" id="view-pipeline">
+        <div class="page-header">
+          <h1>⚗️ Core Processing Pipeline</h1>
+          <p>The internal workflow isolating inputs, guardrails, agents, and structured outputs.</p>
+        </div>
+        <div class="pipeline-container">
+          <div class="pipeline-stage" style="--delay: 1">
+            <div class="stage-icon">📄</div>
+            <div class="stage-title">1. Inputs</div>
+            <div class="stage-desc">Contracts, Invoices, Evidence, Payment Records</div>
+          </div>
+          <div class="pipeline-connector">
+            <div class="connector-line"></div>
+          </div>
+          <div class="pipeline-stage guardrails" style="--delay: 2">
+            <div class="stage-icon">🛡️</div>
+            <div class="stage-title">2. Guardrails Layer</div>
+            <div class="stage-desc">Validates data formats, redacts PII, sanitizes inputs</div>
+          </div>
+          <div class="pipeline-connector">
+            <div class="connector-line"></div>
+          </div>
+          <div class="pipeline-stage agents" style="--delay: 3">
+            <div class="stage-icon">🤖</div>
+            <div class="stage-title">3. Agentic System</div>
+            <div class="stage-desc">Vision Reader → Rule Extraction → Validation & Correction</div>
+          </div>
+          <div class="pipeline-connector">
+            <div class="connector-line"></div>
+          </div>
+          <div class="pipeline-stage output" style="--delay: 4">
+            <div class="stage-icon">📊</div>
+            <div class="stage-title">4. Structured Output</div>
+            <div class="stage-desc">Pydantic strict schema JSON reports</div>
+          </div>
+        </div>
       </div>
 
     </main>
