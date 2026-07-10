@@ -79,7 +79,7 @@ const DOCUMENT_ZONES = [
   { key: "service_agreements", title: "Service Agreements", icon: "📝", hint: "Contracts, SOWs, MSAs" },
   { key: "invoices", title: "Invoices", icon: "🧾", hint: "Invoice DOCX, TXT, MD" },
   { key: "billing_evidence", title: "Billing Evidence", icon: "🔍", hint: "Timesheets, usage logs, SLA reports" },
-  { key: "payment_records", title: "Payment Records", icon: "💳", hint: "ACH receipts, bank statements" },
+  { key: "payment_records", title: "Payment Records", icon: "💳", hint: "Previous payment records" },
 ];
 
 class ApiService {
@@ -464,15 +464,23 @@ function renderUploadTypeSelector() {
   const el = document.getElementById("upload-type-selector");
   if (!el) return;
   el.innerHTML = `
-    <label class="upload-selector-label">Select Billing Type</label>
-    <select class="select-control" onchange="state.selectedBillingType = this.value">
-      <option value="">— Choose billing type —</option>
-      ${state.billingTypes.map((type) => `
-        <option value="${escapeHtml(type)}" ${state.selectedBillingType === type ? "selected" : ""}>
-          ${(BILLING_TYPE_META[type]?.icon || "📄")} ${escapeHtml(BILLING_TYPE_META[type]?.label || formatType(type))}
-        </option>
-      `).join("")}
-    </select>
+    <div class="upload-selector-row">
+      <div class="upload-selector-field">
+        <label class="upload-selector-label">Select Billing Type</label>
+        <select class="select-control" onchange="state.selectedBillingType = this.value">
+          <option value="">— Choose billing type —</option>
+          ${state.billingTypes.map((type) => `
+            <option value="${escapeHtml(type)}" ${state.selectedBillingType === type ? "selected" : ""}>
+              ${(BILLING_TYPE_META[type]?.icon || "📄")} ${escapeHtml(BILLING_TYPE_META[type]?.label || formatType(type))}
+            </option>
+          `).join("")}
+        </select>
+      </div>
+      <button class="btn btn-secondary clear-upload-btn" type="button" onclick="clearUploadedDocuments()" title="Clear uploaded documents">
+        <span aria-hidden="true">🗑️</span>
+        <span>Clear</span>
+      </button>
+    </div>
   `;
 }
 
@@ -483,7 +491,7 @@ function renderDropzones() {
       ${DOCUMENT_ZONES.map((zone) => renderDropzone(zone)).join("")}
     </div>
     <div class="upload-actions">
-      <button class="btn btn-primary btn-lg" id="btn-upload-audit" onclick="runUploadAudit()">🚀 Run Invoice Audit</button>
+      <button class="btn btn-primary btn-lg" id="btn-upload-audit" onclick="runUploadAudit()">🚀 Run Billing Audit</button>
       <span>${Object.values(state.uploadFiles).flat().length} files selected</span>
     </div>
   `;
@@ -544,6 +552,43 @@ function removeFile(key, index) {
   renderDropzones();
 }
 
+function clearUploadedDocuments() {
+  if (state.isAuditing) {
+    Toast.warning("Audit Running", "Please wait for the current audit to finish before clearing uploads.");
+    return;
+  }
+
+  const hadFiles = Object.values(state.uploadFiles).some((files) => files.length);
+  const statusBar = document.getElementById("upload-status-bar");
+  const hadStatus = Boolean(statusBar?.innerHTML.trim());
+
+  for (const key of Object.keys(state.uploadFiles)) {
+    state.uploadFiles[key] = [];
+  }
+
+  clearTimeout(state.auditTimeout);
+  state.isAuditing = false;
+
+  if (statusBar) {
+    statusBar.innerHTML = "";
+    statusBar.style.display = "none";
+  }
+
+  const button = document.getElementById("btn-upload-audit");
+  if (button) {
+    button.disabled = false;
+    button.innerHTML = "🚀 Run Billing Audit";
+  }
+
+  renderDropzones();
+
+  if (hadFiles || hadStatus) {
+    Toast.info("Uploads Cleared", "Uploaded documents and audit status were reset.");
+  } else {
+    Toast.info("Nothing to Clear", "No uploaded documents or audit status found.");
+  }
+}
+
 async function runUploadAudit() {
   if (!state.selectedBillingType) {
     Toast.warning("Missing Type", "Please select a billing type first.");
@@ -587,7 +632,7 @@ async function executeAudit(auditFn) {
     state.isAuditing = false;
     if (button) {
       button.disabled = false;
-      button.innerHTML = "🚀 Run Invoice Audit";
+      button.innerHTML = "🚀 Run Billing Audit";
     }
   }
 }
@@ -713,7 +758,7 @@ function renderResults(report, container) {
       ${renderPaymentIssues(report.payment_summary?.issues || [])}
     </div>
 
-    ${findings.length ? renderFindingsTable(findings) : ""}
+    ${renderFindingsTable(findings)}
     ${renderCorrectedInvoice(report.corrected_invoice)}
     ${renderGuardrails(report.guardrail_notes || [])}
     ${renderNextActions(report.next_actions || [])}
@@ -858,6 +903,15 @@ function renderPaymentIssues(issues) {
 }
 
 function renderFindingsTable(findings) {
+  if (!findings.length) {
+    return `
+    <div class="findings-section reveal visible">
+      <div class="card-title"><span class="icon">🔍</span> Detailed Findings</div>
+      <div class="no-findings">No detailed findings were detected for this audit.</div>
+    </div>
+  `;
+  }
+
   return `
     <div class="findings-section reveal visible">
       <div class="card-title"><span class="icon">🔍</span> Detailed Findings</div>

@@ -540,6 +540,10 @@ button {
   margin-bottom: 24px;
 }
 
+.glass-card.section-full {
+  margin-bottom: 24px;
+}
+
 .glass-card,
 .rules-panel,
 .executive-summary,
@@ -854,6 +858,21 @@ button {
 
 #upload-type-selector {
   margin-bottom: 24px;
+}
+
+.upload-selector-row {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.upload-selector-field {
+  min-width: min(100%, 260px);
+}
+
+.clear-upload-btn {
+  flex-shrink: 0;
 }
 
 .upload-grid {
@@ -1602,6 +1621,15 @@ body.modal-open {
   .finding-detail-grid,
   .status-steps {
     grid-template-columns: 1fr;
+  }
+
+  .upload-selector-row {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .clear-upload-btn {
+    align-self: flex-start;
   }
 
   .hero-section {
