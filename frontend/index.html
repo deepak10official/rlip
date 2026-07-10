@@ -7,12 +7,6 @@
   <meta name="theme-color" content="#060918">
   <title>RLIP — Revenue Leakage Intelligence Platform</title>
   <link rel="stylesheet" href="styles.css">
-  <script src="https://cdn.jsdelivr.net/npm/mermaid@10.4.0/dist/mermaid.min.js"></script>
-  <script>
-    document.addEventListener("DOMContentLoaded", () => {
-      mermaid.initialize({ startOnLoad: true, theme: 'base', themeVariables: { primaryColor: '#0a0e27', primaryTextColor: '#fff', primaryBorderColor: '#00d4ff', lineColor: '#667eea', secondaryColor: '#10b981', tertiaryColor: '#ef4444' } });
-    });
-  </script>
 </head>
 <body>
   <div class="app-layout">
@@ -263,53 +257,74 @@
           <h1>⚗️ Core Processing Pipeline</h1>
           <p>The internal workflow isolating inputs, guardrails, agents, and structured outputs.</p>
         </div>
-        <div class="mermaid-container reveal visible" style="margin-top: 30px; padding: 20px; background: rgba(255,255,255,0.02); border: 1px solid var(--glass-border); border-radius: var(--radius-xl);">
-          <pre class="mermaid" style="display: flex; justify-content: center;">
-flowchart TD
-    classDef input fill:#f8f9fa,stroke:#333,stroke-width:2px,color:#333
-    classDef guard fill:#ef4444,stroke:#fff,stroke-width:2px,color:#fff
-    classDef agent fill:#0a0e27,stroke:#00d4ff,stroke-width:2px,color:#fff
-    classDef output fill:#10b981,stroke:#fff,stroke-width:2px,color:#fff
+        <div class="arch-diagram reveal visible">
+          
+          <div class="arch-section inputs-section">
+            <div class="arch-section-title">1. Inputs</div>
+            <div class="arch-nodes-row">
+              <div class="arch-node">📄 Contracts</div>
+              <div class="arch-node">🧾 Invoices</div>
+              <div class="arch-node">🔍 Evidence</div>
+              <div class="arch-node">💳 Payment</div>
+            </div>
+          </div>
 
-    subgraph Inputs [1. Inputs]
-        direction LR
-        Agmt[Contracts]:::input
-        Inv[Invoices]:::input
-        Ev[Evidence]:::input
-        Pay[Payment]:::input
-    end
+          <div class="arch-arrow"></div>
 
-    Guardrails{2. Guardrails Layer}:::guard
+          <div class="arch-node guardrails-node">
+            <div class="arch-node-icon">🛡️</div>
+            <div>
+              <div class="arch-node-title">2. Guardrails Layer</div>
+              <div class="arch-node-desc">Validates data formats, redacts PII, sanitizes inputs</div>
+            </div>
+          </div>
 
-    subgraph Agents [3. Agentic Validation System]
-        direction TB
-        Vision[Vision Document Reader]:::agent
-        Intake[Document Intake Agent]:::agent
-        
-        subgraph Extraction
-            Rule[Contract Rule Agent]:::agent
-            Evidence[Evidence Validation Agent]:::agent
-            PaymentRec[Payment Reconciliation Agent]:::agent
-        end
-        
-        InvoiceVal[Invoice Validation Agent]:::agent
-        Correction[Corrected Invoice Generation Agent]:::agent
-        Final[Final Report Agent]:::agent
-        
-        Vision --> Intake
-        Intake --> Rule & Evidence & PaymentRec
-        Rule & Evidence & PaymentRec --> InvoiceVal
-        InvoiceVal -->|Valid| Final
-        InvoiceVal -->|Invalid| Correction
-        Correction --> Final
-    end
-    
-    Output[4. Structured Output Models]:::output
+          <div class="arch-arrow"></div>
 
-    Inputs --> Guardrails
-    Guardrails -->|Validated Inputs| Agents
-    Agents -->|Pydantic Models| Output
-          </pre>
+          <div class="arch-section agents-section">
+            <div class="arch-section-title">3. Agentic Validation System</div>
+            
+            <div class="arch-node agent-node">👁️ Vision Document Reader</div>
+            <div class="arch-arrow"></div>
+            
+            <div class="arch-node agent-node">📥 Document Intake Agent</div>
+            <div class="arch-arrow branch-split"></div>
+            
+            <div class="arch-nodes-row extraction-row">
+              <div class="arch-node agent-node sub-agent">📜 Contract Rule Agent</div>
+              <div class="arch-node agent-node sub-agent">🔎 Evidence Validation</div>
+              <div class="arch-node agent-node sub-agent">💵 Payment Recon</div>
+            </div>
+            
+            <div class="arch-arrow branch-merge"></div>
+            
+            <div class="arch-node agent-node highlight-agent">🧾 Invoice Validation Agent</div>
+            
+            <div class="arch-split">
+              <div class="arch-split-branch invalid-branch">
+                <div class="arch-branch-label error-text">If Invalid ❌</div>
+                <div class="arch-node agent-node correction-node">✏️ Corrected Invoice Generation</div>
+                <div class="arch-arrow"></div>
+              </div>
+              <div class="arch-split-branch valid-branch">
+                <div class="arch-branch-label success-text">If Valid ✅</div>
+                <div class="arch-arrow stretch-arrow"></div>
+              </div>
+            </div>
+            
+            <div class="arch-node agent-node">📊 Final Report Agent</div>
+          </div>
+
+          <div class="arch-arrow"></div>
+
+          <div class="arch-node output-node">
+            <div class="arch-node-icon">✨</div>
+            <div>
+              <div class="arch-node-title">4. Structured Output Models</div>
+              <div class="arch-node-desc">Pydantic strict schema JSON reports</div>
+            </div>
+          </div>
+
         </div>
       </div>
 
