@@ -718,8 +718,8 @@ function renderResults(report, container) {
     ${renderGuardrails(report.guardrail_notes || [])}
     ${renderNextActions(report.next_actions || [])}
     
-    <div class="results-actions" style="margin-top: 32px; display: flex; justify-content: center;">
-      <button class="btn btn-primary" onclick="downloadReportPDF()">
+    <div class="results-actions" data-html2canvas-ignore="true" style="margin-top: 32px; display: flex; justify-content: center;">
+      <button id="pdf-download-btn" class="btn btn-primary" onclick="downloadReportPDF()">
         <span class="icon">📥</span> Download Audit Report as PDF
       </button>
     </div>
@@ -728,23 +728,32 @@ function renderResults(report, container) {
 
 function downloadReportPDF() {
   const element = document.getElementById("results-content");
+  const btn = document.getElementById("pdf-download-btn");
   
-  // Clone element to remove the button before printing to avoid it being in the PDF
-  const clone = element.cloneNode(true);
-  const actionDiv = clone.querySelector('.results-actions');
-  if (actionDiv) actionDiv.remove();
+  if (btn) {
+    btn.innerHTML = '<span class="icon">⏳</span> Generating PDF...';
+    btn.disabled = true;
+  }
 
   const opt = {
-    margin:       10,
+    margin:       [10, 10, 10, 10], // top, left, bottom, right
     filename:     'RLIP_Audit_Report.pdf',
     image:        { type: 'jpeg', quality: 0.98 },
-    html2canvas:  { scale: 2, useCORS: true },
+    html2canvas:  { scale: 2, useCORS: true, windowWidth: 1200 },
     jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
   };
 
-  showToast("Preparing PDF for download...");
-  html2pdf().set(opt).from(clone).save().then(() => {
-    showToast("Download complete!");
+  html2pdf().set(opt).from(element).save().then(() => {
+    if (btn) {
+      btn.innerHTML = '<span class="icon">📥</span> Download Audit Report as PDF';
+      btn.disabled = false;
+    }
+  }).catch((err) => {
+    console.error("PDF Generation failed:", err);
+    if (btn) {
+      btn.innerHTML = '<span class="icon">❌</span> Failed. Try Again.';
+      btn.disabled = false;
+    }
   });
 }
 
