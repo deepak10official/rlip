@@ -717,7 +717,35 @@ function renderResults(report, container) {
     ${renderCorrectedInvoice(report.corrected_invoice)}
     ${renderGuardrails(report.guardrail_notes || [])}
     ${renderNextActions(report.next_actions || [])}
+    
+    <div class="results-actions" style="margin-top: 32px; display: flex; justify-content: center;">
+      <button class="btn btn-primary" onclick="downloadReportPDF()">
+        <span class="icon">📥</span> Download Audit Report as PDF
+      </button>
+    </div>
   `;
+}
+
+function downloadReportPDF() {
+  const element = document.getElementById("results-content");
+  
+  // Clone element to remove the button before printing to avoid it being in the PDF
+  const clone = element.cloneNode(true);
+  const actionDiv = clone.querySelector('.results-actions');
+  if (actionDiv) actionDiv.remove();
+
+  const opt = {
+    margin:       10,
+    filename:     'RLIP_Audit_Report.pdf',
+    image:        { type: 'jpeg', quality: 0.98 },
+    html2canvas:  { scale: 2, useCORS: true },
+    jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+  };
+
+  showToast("Preparing PDF for download...");
+  html2pdf().set(opt).from(clone).save().then(() => {
+    showToast("Download complete!");
+  });
 }
 
 function renderPaymentIssues(issues) {
