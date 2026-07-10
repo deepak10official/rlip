@@ -1,0 +1,28 @@
+From: Ava Shah <ava.shah@axion.example>
+To: Morgan Hale <morgan.hale@northwind.example>
+Cc: Arjun Mehta <arjun.mehta@axion.example>
+Date: Sun, 09 Aug 2026 16:22:00 +0000
+Subject: Northwind July SLA / KPI roll-up - late close notes
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+MIME-Version: 1.0
+
+Hi Morgan,
+
+I am sending the July SLA roll-up late because we had to reconcile the outage window from 19-Jul.
+
+Production support availability target was 99.7%; the confirmed number is 99.31%.
+P1 response target was 30 minutes; the average was 44 minutes after the 19-Jul incident was included.
+P2 response target was 2 business hours; average first update was 2 hours 35 minutes.
+The monthly service report target was the 5th business day; the report was posted 09-Aug.
+
+KPI notes:
+- Tickets resolved within SLA: 91.0% against 95% target
+- Billing exceptions cleared before close: 95.4% against 98% target
+- Repeat incident rate: 8.6% against the under-6% threshold
+
+We can send the RCA and a proposed service-credit note if Finance needs it before the invoice is released.
+
+Regards,
+Ava
+Service Delivery, Axion

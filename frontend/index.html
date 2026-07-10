@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="RLIP — Revenue Leakage Intelligence Platform. AI-powered agents that detect billing variances, audit invoices, and recover lost revenue.">
+  <meta name="theme-color" content="#060918">
+  <title>RLIP — Revenue Leakage Intelligence Platform</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app-layout">
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <div class="brand-logo">
+          <div class="brand-icon">R</div>
+          <div class="brand-text">
+            <span class="brand-name">RLIP</span>
+            <span class="brand-subtitle">Revenue Leakage Intelligence Platform</span>
+          </div>
+        </div>
+        <button class="sidebar-toggle" onclick="toggleSidebar()" title="Toggle sidebar">☰</button>
+      </div>
+
+      <nav class="sidebar-nav">
+        <a class="nav-item active" data-route="home">
+          <span class="nav-icon">🏠</span>
+          <span class="nav-label">Home</span>
+        </a>
+        <a class="nav-item" data-route="audit">
+          <span class="nav-icon">🔍</span>
+          <span class="nav-label">Billing Types</span>
+        </a>
+        <a class="nav-item" data-route="upload">
+          <span class="nav-icon">📤</span>
+          <span class="nav-label">Upload Audit</span>
+        </a>
+        <a class="nav-item" data-route="results">
+          <span class="nav-icon">📋</span>
+          <span class="nav-label">Results</span>
+        </a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="health-indicator">
+          <span class="health-dot offline" id="health-dot"></span>
+          <span class="health-label" id="health-label">Checking...</span>
+        </div>
+        <div class="theme-toggle" id="theme-toggle" title="Toggle Light/Dark Theme">
+          <span class="theme-icon">🌙</span>
+        </div>
+      </div>
+    </aside>
+
+    <main class="main-content">
+
+      <!-- ── Home ───────────────────────────────────────────── -->
+      <div class="view active" id="view-home">
+
+        <!-- Hero -->
+        <section class="home-hero">
+          <div class="home-hero-orb orb-1"></div>
+          <div class="home-hero-orb orb-2"></div>
+          <div class="home-hero-orb orb-3"></div>
+          <div class="home-hero-content">
+            <div class="home-logo-wrap">
+              <div class="home-logo">RLIP</div>
+              <div class="home-logo-ring ring-1"></div>
+              <div class="home-logo-ring ring-2"></div>
+            </div>
+            <div class="home-platform-name">Revenue Leakage Intelligence Platform</div>
+            <h1 class="home-headline">
+              Stop Leaving Revenue<br>on the <span class="gradient-text">Table</span>
+            </h1>
+            <p class="home-subline">
+              AI-powered agents that <strong>detect billing variances</strong>, audit invoices,
+              and <strong>recover lost revenue</strong> — in minutes, not weeks.
+            </p>
+            <div class="home-ctas">
+              <button class="btn btn-primary btn-lg hero-cta" onclick="router.navigate('upload')">
+                🚀 Start Audit Now
+              </button>
+              <button class="btn btn-ghost btn-lg" onclick="router.navigate('audit')">
+                Explore Billing Types →
+              </button>
+            </div>
+          </div>
+        </section>
+
+        <!-- Stats Bar -->
+        <section class="home-stats-bar">
+          <div class="home-stat-item">
+            <span class="home-stat-num" id="stat-types">9</span>
+            <span class="home-stat-label">Billing Types</span>
+          </div>
+          <div class="home-stat-divider"></div>
+          <div class="home-stat-item">
+            <span class="home-stat-num" id="stat-stages">7</span>
+            <span class="home-stat-label">Pipeline Stages</span>
+          </div>
+          <div class="home-stat-divider"></div>
+          <div class="home-stat-item">
+            <span class="home-stat-num" id="stat-output">100%</span>
+            <span class="home-stat-label">Structured Output</span>
+          </div>
+          <div class="home-stat-divider"></div>
+          <div class="home-stat-item">
+            <span class="home-stat-num" id="stat-model">GPT-4o</span>
+            <span class="home-stat-label">AI Engine</span>
+          </div>
+        </section>
+
+        <!-- Feature Cards -->
+        <section class="home-features">
+          <div class="home-section-label">Core Capabilities</div>
+          <div class="home-features-grid">
+            <div class="feature-card feature-blue reveal">
+              <div class="feature-icon-wrap">🔍</div>
+              <div class="feature-title">Invoice Validation</div>
+              <div class="feature-desc">Cross-references every line item against contracts, evidence logs, and payment records to surface discrepancies instantly.</div>
+              <div class="feature-tag">invoice_validation_rules · evidence_rules</div>
+            </div>
+            <div class="feature-card feature-emerald reveal">
+              <div class="feature-icon-wrap">💰</div>
+              <div class="feature-title">Revenue Recovery</div>
+              <div class="feature-desc">Quantifies exact variance amounts per finding to prepare for dispute or resubmission.</div>
+              <div class="feature-tag">variance_amount · actionable_insights</div>
+            </div>
+            <div class="feature-card feature-purple reveal">
+              <div class="feature-icon-wrap">🛡️</div>
+              <div class="feature-title">Guardrailed AI</div>
+              <div class="feature-desc">Every output is validated by a structured schema — no hallucinated figures, no unverified claims. Sources cited per finding.</div>
+              <div class="feature-tag">guardrail_notes · structured_output</div>
+            </div>
+          </div>
+        </section>
+
+        <!-- How It Works -->
+        <section class="home-how">
+          <div class="home-section-label">How It Works</div>
+          <div class="home-steps">
+            <div class="home-step reveal">
+              <div class="step-num">01</div>
+              <div class="step-icon">📤</div>
+              <div class="step-title">Upload Documents</div>
+              <div class="step-desc">Upload service agreements, invoices, billing evidence, and payment records across 9 supported billing types.</div>
+            </div>
+            <div class="home-step-connector">
+              <div class="connector-fill"></div>
+            </div>
+            <div class="home-step reveal">
+              <div class="step-num">02</div>
+              <div class="step-icon">🤖</div>
+              <div class="step-title">AI Audit Pipeline</div>
+              <div class="step-desc">7 specialized AI agents run in sequence — Vision reading, contract analysis, evidence cross-check, and payment reconciliation.</div>
+            </div>
+            <div class="home-step-connector">
+              <div class="connector-fill"></div>
+            </div>
+            <div class="home-step reveal">
+              <div class="step-num">03</div>
+              <div class="step-icon">📋</div>
+              <div class="step-title">Structured Results</div>
+              <div class="step-desc">Get a complete audit report with severity-ranked findings, variance amounts, corrected invoices, and next actions.</div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Output Preview -->
+        <section class="home-preview">
+          <div class="home-section-label">Sample Audit Output</div>
+          <div class="preview-card">
+            <div class="preview-header">
+              <span class="preview-title">📋 Audit Report — Time &amp; Materials</span>
+              <span class="status-badge invalid">INVALID ❌</span>
+            </div>
+            <div class="preview-body">
+              <div class="preview-summary">
+                <div class="preview-block-title">Executive Summary</div>
+                <p class="preview-text">Invoice <code>INV-2024-089</code> contains 3 billing discrepancies. Unbilled support hours and an incorrect discount rate result in a total variance of <strong style="color:#10b981;">$32,500</strong>. Corrected invoice draft generated.</p>
+                <div class="preview-kpis">
+                  <div class="preview-kpi"><div class="preview-kpi-val red">3</div><div class="preview-kpi-lab">Findings</div></div>
+                  <div class="preview-kpi"><div class="preview-kpi-val emerald">$32,500</div><div class="preview-kpi-lab">Variance</div></div>
+                  <div class="preview-kpi"><div class="preview-kpi-val blue">87%</div><div class="preview-kpi-lab">Confidence</div></div>
+                </div>
+              </div>
+              <div class="preview-findings">
+                <div class="preview-block-title">Findings</div>
+                <div class="preview-finding-row high">
+                  <span class="sev-badge sev-high">HIGH</span>
+                  <span class="finding-name">Unbilled Support Hours</span>
+                  <span class="finding-amount">$18,500</span>
+                </div>
+                <div class="preview-finding-row high">
+                  <span class="sev-badge sev-high">HIGH</span>
+                  <span class="finding-name">Duplicate Payment Detected</span>
+                  <span class="finding-amount">$9,800</span>
+                </div>
+                <div class="preview-finding-row medium">
+                  <span class="sev-badge sev-medium">MED</span>
+                  <span class="finding-name">Incorrect Discount Applied</span>
+                  <span class="finding-amount">$4,200</span>
+                </div>
+              </div>
+            </div>
+            <div class="preview-footer">
+              <span class="preview-footer-item">✏️ Corrected invoice: <strong>$27,050</strong></span>
+              <span class="preview-footer-sep">·</span>
+              <span class="preview-footer-item">✅ 4 next actions generated</span>
+              <span class="preview-footer-sep">·</span>
+              <span class="preview-footer-item">🛡️ 2 guardrail notes</span>
+            </div>
+          </div>
+        </section>
+
+
+      </div>
+
+      <!-- ── Upload Audit ────────────────────────────────────── -->
+      <div class="view" id="view-upload">
+        <div class="page-header">
+          <h1>📤 Upload Audit</h1>
+          <p>Upload your four document groups and run an AI-powered billing audit.</p>
+        </div>
+        <div id="upload-status-bar" style="display: none;"></div>
+        <div id="upload-type-selector"></div>
+        <div id="upload-dropzones"></div>
+      </div>
+
+      <!-- ── Billing Types ───────────────────────────────────── -->
+      <div class="view" id="view-audit">
+        <div class="page-header">
+          <h1>🔍 Billing Types</h1>
+          <p>Explore available billing models and their validation rules.</p>
+        </div>
+        <div class="billing-types-grid" id="billing-types-grid"></div>
+        <div id="audit-config"></div>
+      </div>
+
+      <!-- ── Results ─────────────────────────────────────────── -->
+      <div class="view" id="view-results">
+        <div class="page-header">
+          <h1>📋 Audit Results</h1>
+          <p>Detailed findings, payment reconciliation, and corrected invoice drafts.</p>
+        </div>
+        <div id="results-content"></div>
+      </div>
+
+    </main>
+  </div>
+
+  <div class="toast-container" id="toast-container"></div>
+  <div class="billing-rules-modal" id="billing-rules-modal" aria-hidden="true" onclick="handleBillingRulesBackdrop(event)">
+    <div class="billing-rules-dialog" role="dialog" aria-modal="true" aria-labelledby="billing-rules-modal-title" tabindex="-1">
+      <button class="modal-close" type="button" onclick="closeBillingRulesModal()" aria-label="Close billing rules">×</button>
+      <div id="billing-rules-modal-content"></div>
+    </div>
+  </div>
+  <script src="app.js"></script>
+</body>
+</html>

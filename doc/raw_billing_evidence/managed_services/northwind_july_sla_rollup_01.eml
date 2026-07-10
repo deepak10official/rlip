@@ -1,0 +1,28 @@
+From: Ava Shah <ava.shah@axion.example>
+To: Morgan Hale <morgan.hale@northwind.example>
+Cc: Arjun Mehta <arjun.mehta@axion.example>
+Date: Wed, 05 Aug 2026 10:12:00 +0000
+Subject: Northwind July SLA / KPI roll-up
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+MIME-Version: 1.0
+
+Hi Morgan,
+
+Sharing the July run-service roll-up for Northwind before we send the recurring managed-services invoice.
+
+Production support availability target was 99.7%; the monitoring export shows 99.82%.
+P1 response target was 30 minutes; average acknowledgement was 18 minutes.
+P2 response target was 2 business hours; average first update was 1 hour 11 minutes.
+The monthly service report was posted to the shared folder this morning, 05-Aug.
+
+KPI notes:
+- Tickets resolved within SLA: 97.8% against 95% target
+- Billing exceptions cleared before close: 99.1% against 98% target
+- Repeat incident rate: 4.2% against the under-6% threshold
+
+I do not see anything in the July pack that would require a service credit. Please let me know by EOD if you want us to hold billing.
+
+Thanks,
+Ava
+Service Delivery, Axion

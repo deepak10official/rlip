@@ -1,0 +1,28 @@
+From: Morgan Hale <morgan.hale@crownbank.example>
+To: Arjun Mehta <arjun.mehta@axion.example>
+Date: Thu, 30 Jul 2026 21:44:00 +0000
+Subject: Re: TR-M3 milestone acceptance request
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+MIME-Version: 1.0
+
+Arjun,
+
+We cannot accept TR-M3 yet.
+
+The go-live note is fine, but the milestone acceptance language requires the 30-day stabilization closure report. Also, the defect log still shows two critical defects open. Please do not bill TR-M3 until the closure pack is complete and the defects are either closed or formally deferred.
+
+Morgan
+
+-----Original Message-----
+From: Arjun Mehta <arjun.mehta@axion.example>
+Sent: Thursday, July 30, 2026 12:05 PM
+To: Morgan Hale <morgan.hale@crownbank.example>
+Subject: TR-M3 milestone acceptance request
+
+Hi Morgan,
+
+Requesting acceptance for TR-M3 based on the production cutover note and go-live confirmation.
+
+Thanks,
+Arjun

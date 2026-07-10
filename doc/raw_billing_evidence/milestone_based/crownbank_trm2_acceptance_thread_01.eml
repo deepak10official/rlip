@@ -1,0 +1,33 @@
+From: Morgan Hale <morgan.hale@crownbank.example>
+To: Arjun Mehta <arjun.mehta@axion.example>
+Date: Sat, 25 Jul 2026 20:12:00 +0000
+Subject: Re: TR-M2 milestone acceptance request
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+MIME-Version: 1.0
+
+Arjun,
+
+Accepted. The TR-M2 bank-file integration milestone is approved for billing.
+
+The UAT pack CB-TRM2-UAT-v3 passed our review, and the reconciliation workflow demo from 24-Jul is sufficient for the acceptance condition in the SOW. Please reference TR-M2 on the invoice. The milestone value should be USD 85,000.
+
+Morgan
+
+-----Original Message-----
+From: Arjun Mehta <arjun.mehta@axion.example>
+Sent: Friday, July 24, 2026 9:40 AM
+To: Morgan Hale <morgan.hale@crownbank.example>
+Subject: TR-M2 milestone acceptance request
+
+Hi Morgan,
+
+We are requesting acceptance for TR-M2: bank-file integration and reconciliation workflow.
+
+Attached in the project workspace:
+- CB-TRM2-UAT-v3.pdf
+- reconciliation-demo-recording-link.txt
+- open-defect-summary.xlsx
+
+Thanks,
+Arjun
