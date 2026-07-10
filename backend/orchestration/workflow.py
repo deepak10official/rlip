@@ -79,7 +79,7 @@ class BillingAuditWorkflow:
             intake = await self._run_agent(
                 self.agents.document_intake,
                 _prompt(
-                    "Summarize the document packet using the vision extraction as the primary reading source.",
+                    "Build audit context for the document packet using the vision extraction as the primary reading source.",
                     packet_prompt,
                     {
                         "billing_rules": billing_rules.model_dump(),

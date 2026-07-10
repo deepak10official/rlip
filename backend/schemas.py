@@ -221,6 +221,8 @@ class CorrectedInvoice(BaseModel):
 
 
 class AuditWorkflowOutput(BaseModel):
+    audit_id: str | None = None
+    completed_at: str | None = None
     status: InvoiceStatus
     billing_type: str
     executive_summary: str
@@ -230,3 +232,14 @@ class AuditWorkflowOutput(BaseModel):
     source_documents: list[str]
     guardrail_notes: list[str] = Field(default_factory=list)
     next_actions: list[str] = Field(default_factory=list)
+
+
+class AuditResultRecord(BaseModel):
+    id: str
+    billing_type: str
+    completed_at: str
+    status: InvoiceStatus
+    finding_count: int
+    total_variance: float
+    document_count: int
+    result: AuditWorkflowOutput

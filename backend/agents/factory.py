@@ -53,7 +53,7 @@ def build_agents() -> BillingAgents:
         output_type=VisionExtractionReport,
     )
     document_intake = Agent(
-        name="Document Intake Agent",
+        name="Audit Context Agent",
         instructions=load_prompt("document_intake"),
         model=settings.fast_model,
         input_guardrails=[billing_scope_guardrail],

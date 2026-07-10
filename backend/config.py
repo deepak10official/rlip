@@ -17,6 +17,7 @@ class Settings(BaseModel):
     project_root: Path = PROJECT_ROOT
     documents_root: Path = PROJECT_ROOT / "documents"
     memory_root: Path = PROJECT_ROOT / ".agent_memory"
+    results_root: Path = Path(os.getenv("AUDIT_RESULTS_ROOT", PROJECT_ROOT / "backend" / "results"))
     model: str = os.getenv("OPENAI_MODEL", "gpt-5.5")
     fast_model: str = os.getenv("OPENAI_FAST_MODEL", "gpt-5.4-mini")
     vision_model: str = os.getenv("OPENAI_VISION_MODEL", os.getenv("OPENAI_MODEL", "gpt-5.5"))

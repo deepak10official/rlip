@@ -14,7 +14,8 @@ from backend.billing_rules import get_billing_rules
 from backend.config import settings
 from backend.document_loader import load_packet_from_corpus
 from backend.orchestration.workflow import run_corpus_audit_async, run_uploaded_audit_async
-from backend.schemas import AuditWorkflowOutput, SUPPORTED_BILLING_TYPES
+from backend.result_store import get_audit_result, list_audit_results, save_audit_result
+from backend.schemas import AuditResultRecord, AuditWorkflowOutput, SUPPORTED_BILLING_TYPES
 
 
 app = FastAPI(
@@ -45,6 +46,7 @@ def health() -> dict:
         "model": settings.model,
         "vision_model": settings.vision_model,
         "fast_model": settings.fast_model,
+        "results_path": str(settings.results_root),
     }
 
 
@@ -76,7 +78,8 @@ def corpus_documents(billing_type: str) -> dict:
 async def audit_corpus(request: CorpusAuditRequest) -> AuditWorkflowOutput:
     _validate_billing_type(request.billing_type)
     try:
-        return await run_corpus_audit_async(request.billing_type, session_id=request.session_id)
+        report = await run_corpus_audit_async(request.billing_type, session_id=request.session_id)
+        return save_audit_result(report).result
     except Exception as exc:
         raise HTTPException(status_code=500, detail=str(exc)) from exc
 
@@ -103,7 +106,7 @@ async def audit_upload(
         evidence_paths = await _save_uploads(billing_evidence, root / "billing_evidence")
         payment_paths = await _save_uploads(payment_records, root / "payment_records")
         try:
-            return await run_uploaded_audit_async(
+            report = await run_uploaded_audit_async(
                 billing_type=billing_type,
                 service_agreements=agreement_paths,
                 invoices=invoice_paths,
@@ -111,8 +114,22 @@ async def audit_upload(
                 payment_records=payment_paths,
                 session_id=session_id,
             )
+            return save_audit_result(report).result
         except Exception as exc:
             raise HTTPException(status_code=500, detail=str(exc)) from exc
+
+
+@app.get("/audit/results", response_model=list[AuditResultRecord])
+def audit_results() -> list[AuditResultRecord]:
+    return list_audit_results()
+
+
+@app.get("/audit/results/{audit_id}", response_model=AuditResultRecord)
+def audit_result(audit_id: str) -> AuditResultRecord:
+    record = get_audit_result(audit_id)
+    if record is None:
+        raise HTTPException(status_code=404, detail=f"Audit result not found: {audit_id}")
+    return record
 
 
 def _validate_billing_type(billing_type: str) -> None:
@@ -134,4 +151,3 @@ async def _save_uploads(files: list[UploadFile], target_dir: Path) -> list[Path]
         path.write_bytes(await upload.read())
         paths.append(path)
     return paths
-

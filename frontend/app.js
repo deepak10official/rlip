@@ -1,4 +1,5 @@
 const API_BASE = "http://127.0.0.1:8000";
+const MAX_AUDIT_HISTORY = 50;
 
 const BILLING_CATEGORIES = {
   recurring: { label: "Recurring", color: "#10b981", bg: "rgba(16,185,129,0.12)" },
@@ -67,7 +68,7 @@ const BILLING_TYPE_META = {
 
 const AUDIT_STEPS = [
   { id: "vision", label: "Vision Reading", icon: "👁️" },
-  { id: "intake", label: "Doc Intake", icon: "📥" },
+  { id: "intake", label: "Audit Context", icon: "🧭" },
   { id: "contract", label: "Contract Rules", icon: "📜" },
   { id: "evidence", label: "Evidence Check", icon: "🔍" },
   { id: "invoice", label: "Invoice Validation", icon: "🧾" },
@@ -135,6 +136,14 @@ class ApiService {
     for (const file of files.payment_records || []) formData.append("payment_records", file);
     return this.request("/audit/upload", { method: "POST", body: formData, rawBody: true });
   }
+
+  auditResults() {
+    return this.request("/audit/results");
+  }
+
+  auditResult(auditId) {
+    return this.request(`/audit/results/${encodeURIComponent(auditId)}`);
+  }
 }
 
 const api = new ApiService(API_BASE);
@@ -148,6 +157,7 @@ const state = {
   billingRulesModalOpen: false,
   billingRulesRequestId: 0,
   auditResult: null,
+  activeAuditRunId: null,
   auditHistory: [],
   isAuditing: false,
   uploadFiles: {
@@ -616,8 +626,9 @@ async function executeAudit(auditFn) {
   try {
     Toast.info("Audit Started", "Running agentic billing validation...");
     const result = await auditFn();
-    state.auditResult = result;
-    state.auditHistory.push(result);
+    const auditRun = upsertAuditRunFromReport(result);
+    state.auditResult = auditRun.result;
+    state.activeAuditRunId = auditRun.id;
     AUDIT_STEPS.forEach((step) => updateStepStatus(step.id, "completed"));
     Toast.success("Audit Complete", `Found ${result.validation_report?.findings?.length || 0} findings.`);
     showAuditCompleteButton(result);
@@ -695,23 +706,96 @@ function updateStepStatus(stepId, status) {
   if (el) el.className = `status-step ${status}`;
 }
 
-function initResults() {
+function upsertAuditRunFromReport(result) {
+  const auditRun = createAuditRunFromReport(result);
+  state.auditHistory = [
+    auditRun,
+    ...state.auditHistory.filter((run) => run.id !== auditRun.id),
+  ].slice(0, MAX_AUDIT_HISTORY);
+
+  return auditRun;
+}
+
+function createAuditRunFromReport(result) {
+  const billingType = result.billing_type || state.selectedBillingType || "billing";
+  const completedAt = result.completed_at || new Date().toISOString();
+  const findings = result.validation_report?.findings || [];
+  const totalVariance = findings.reduce((sum, finding) => sum + Math.abs(finding.variance_amount || 0), 0);
+
+  return {
+    id: result.audit_id || `${billingType}-${Date.now()}`,
+    billing_type: billingType,
+    completed_at: completedAt,
+    status: result.status || "needs_review",
+    finding_count: findings.length,
+    total_variance: totalVariance,
+    document_count: result.source_documents?.length || 0,
+    result,
+  };
+}
+
+async function refreshAuditHistory() {
+  const records = await api.auditResults();
+  state.auditHistory = (records || []).slice(0, MAX_AUDIT_HISTORY);
+  if (state.activeAuditRunId && !state.auditHistory.some((run) => run.id === state.activeAuditRunId)) {
+    state.activeAuditRunId = null;
+  }
+  if (!state.activeAuditRunId && state.auditHistory.length) {
+    state.activeAuditRunId = state.auditHistory[0].id;
+  }
+}
+
+function getActiveAuditRun() {
+  if (!state.auditHistory.length) return null;
+  if (state.activeAuditRunId) {
+    return state.auditHistory.find((run) => run.id === state.activeAuditRunId) || null;
+  }
+  return state.auditHistory[0];
+}
+
+async function initResults() {
   const container = document.getElementById("results-content");
-  if (!state.auditResult) {
+  if (!container) return;
+
+  container.innerHTML = `
+    <div class="empty-state compact">
+      <div class="spinner"></div>
+      <div class="empty-state-title">Loading Result History</div>
+    </div>
+  `;
+
+  try {
+    await refreshAuditHistory();
+  } catch (error) {
     container.innerHTML = `
       <div class="empty-state">
-        <div class="empty-state-icon">📊</div>
-        <div class="empty-state-title">No Audit Results</div>
-        <div class="empty-state-desc">Run an audit first to see detailed results here.</div>
-        <button class="btn btn-primary" onclick="router.navigate('audit')">Start Audit</button>
+        <div class="empty-state-icon">🔌</div>
+        <div class="empty-state-title">Cannot Load Result History</div>
+        <div class="empty-state-desc">${escapeHtml(error.message)}</div>
       </div>
     `;
     return;
   }
-  renderResults(state.auditResult, container);
+
+  if (!state.auditHistory.length) {
+    container.innerHTML = `
+      <div class="empty-state">
+        <div class="empty-state-icon">📊</div>
+        <div class="empty-state-title">No Audit Results</div>
+        <div class="empty-state-desc">Run an audit first to create JSON results in backend/results.</div>
+        <button class="btn btn-primary" onclick="router.navigate('upload')">Start Audit</button>
+      </div>
+    `;
+    return;
+  }
+
+  const activeRun = getActiveAuditRun() || state.auditHistory[0];
+  state.activeAuditRunId = activeRun.id;
+  state.auditResult = activeRun.result;
+  renderResults(activeRun.result, container, activeRun);
 }
 
-function renderResults(report, container) {
+function renderResults(report, container, activeRun = null) {
   const findings = report.validation_report?.findings || [];
   const totalVariance = findings.reduce((sum, finding) => sum + Math.abs(finding.variance_amount || 0), 0);
   const highCount = findings.filter((finding) => finding.severity === "high").length;
@@ -719,6 +803,8 @@ function renderResults(report, container) {
   const lowCount = findings.filter((finding) => finding.severity === "low").length;
 
   container.innerHTML = `
+    ${renderAuditHistoryPanel(activeRun?.id)}
+    ${activeRun ? renderActiveRunBanner(activeRun) : ""}
     <div class="results-grid reveal visible">
       <div class="executive-summary">
         <div class="card-title"><span class="icon">📋</span> Executive Summary</div>
@@ -760,128 +846,73 @@ function renderResults(report, container) {
 
     ${renderFindingsTable(findings)}
     ${renderCorrectedInvoice(report.corrected_invoice)}
-    ${renderGuardrails(report.guardrail_notes || [])}
     ${renderNextActions(report.next_actions || [])}
-    
-    <div class="results-actions" data-html2canvas-ignore="true" style="margin-top: 32px; display: flex; justify-content: center;">
-      <button id="pdf-download-btn" class="btn btn-primary" onclick="downloadReportPDF()">
-        <span class="icon">📥</span> Download Audit Report as PDF
-      </button>
+  `;
+  bindAuditHistoryEvents(container);
+}
+
+function renderAuditHistoryPanel(activeId) {
+  if (!state.auditHistory.length) return "";
+
+  return `
+    <div class="audit-history-panel reveal visible">
+      <div class="audit-history-header">
+        <div>
+          <div class="card-title"><span class="icon">🗂️</span> Result History</div>
+          <div class="audit-history-count">${state.auditHistory.length} saved run${state.auditHistory.length !== 1 ? "s" : ""}</div>
+        </div>
+      </div>
+      <div class="audit-history-list">
+        ${state.auditHistory.map((run) => `
+          <button class="audit-history-item ${run.id === activeId ? "active" : ""}" type="button" data-audit-run-id="${escapeHtml(run.id)}" aria-current="${run.id === activeId ? "true" : "false"}">
+            <div class="history-run-main">
+              <span class="history-run-id">${escapeHtml(run.id)}</span>
+              ${statusBadge(run.status)}
+            </div>
+            <div class="history-run-meta">
+              <span>${escapeHtml(formatType(run.billing_type))}</span>
+              <span>${escapeHtml(formatDateTime(run.completed_at))}</span>
+              <span>${run.finding_count || 0} finding${run.finding_count === 1 ? "" : "s"}</span>
+              <span>${formatCurrency(run.total_variance || 0)}</span>
+            </div>
+          </button>
+        `).join("")}
+      </div>
     </div>
   `;
 }
 
-function downloadReportPDF() {
-  const btn = document.getElementById("pdf-download-btn");
-  
-  if (btn) {
-    btn.innerHTML = '<span class="icon">⏳</span> Generating PDF...';
-    btn.disabled = true;
-  }
+function renderActiveRunBanner(run) {
+  return `
+    <div class="active-run-strip reveal visible">
+      <div>
+        <div class="active-run-label">Selected Run</div>
+        <div class="active-run-id">${escapeHtml(run.id)}</div>
+      </div>
+      <div class="active-run-meta">
+        <span>${escapeHtml(formatDateTime(run.completed_at))}</span>
+        <span>${escapeHtml(formatType(run.billing_type))}</span>
+        <span>${statusBadge(run.status)}</span>
+      </div>
+    </div>
+  `;
+}
 
-  // Create a clean, unstyled hidden container exclusively for PDF rendering
-  const printContainer = document.createElement("div");
-  // state.auditResult contains the full report data
-  printContainer.innerHTML = buildPrintTemplate(state.auditResult);
-  
-  // Position it off-screen but in the DOM so html2canvas can measure it properly
-  printContainer.style.position = "absolute";
-  printContainer.style.left = "-9999px";
-  printContainer.style.top = "0";
-  printContainer.style.width = "800px"; // Fixed width for consistent PDF layout
-  printContainer.style.backgroundColor = "#ffffff";
-  printContainer.style.color = "#000000";
-  document.body.appendChild(printContainer);
-
-  const opt = {
-    margin:       15,
-    filename:     'RLIP_Audit_Report.pdf',
-    image:        { type: 'jpeg', quality: 0.98 },
-    html2canvas:  { scale: 2, useCORS: true, logging: false },
-    jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
-  };
-
-  html2pdf().set(opt).from(printContainer).save().then(() => {
-    document.body.removeChild(printContainer);
-    if (btn) {
-      btn.innerHTML = '<span class="icon">📥</span> Download Audit Report as PDF';
-      btn.disabled = false;
-    }
-  }).catch((err) => {
-    console.error("PDF Generation failed:", err);
-    document.body.removeChild(printContainer);
-    if (btn) {
-      btn.innerHTML = '<span class="icon">❌</span> Failed. Try Again.';
-      btn.disabled = false;
-    }
+function bindAuditHistoryEvents(container) {
+  container.querySelectorAll("[data-audit-run-id]").forEach((button) => {
+    button.addEventListener("click", () => selectAuditRun(button.dataset.auditRunId));
   });
 }
 
-function buildPrintTemplate(report) {
-  if (!report) return "<div>No data available</div>";
-  const findings = report.validation_report?.findings || [];
-  const totalVariance = findings.reduce((sum, finding) => sum + Math.abs(finding.variance_amount || 0), 0);
-  
-  return `
-    <div style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; padding: 20px; color: #1f2937; line-height: 1.5;">
-      <div style="text-align: center; border-bottom: 2px solid #e5e7eb; padding-bottom: 20px; margin-bottom: 30px;">
-        <h1 style="margin: 0; font-size: 28px; color: #111827; letter-spacing: -0.5px;">RLIP Audit Report</h1>
-        <p style="margin: 8px 0 0; color: #6b7280; font-size: 14px;">Generated on ${new Date().toLocaleDateString()} • Billing Type: ${report.billing_type}</p>
-      </div>
-
-      <div style="margin-bottom: 30px;">
-        <h2 style="font-size: 18px; color: #111827; border-bottom: 1px solid #e5e7eb; padding-bottom: 8px; margin-bottom: 16px;">Executive Summary</h2>
-        <div style="display: flex; gap: 40px; margin-bottom: 16px;">
-          <div><strong>Status:</strong> <span style="color: ${report.status === 'valid' ? '#10b981' : report.status === 'invalid' ? '#ef4444' : '#f59e0b'}; text-transform: uppercase;">${report.status}</span></div>
-          <div><strong>Total Variance Impact:</strong> <span style="color: #ef4444;">$${totalVariance.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</span></div>
-        </div>
-        <p style="color: #4b5563; margin: 0;">${escapeHtml(report.executive_summary || "")}</p>
-      </div>
-
-      <div style="margin-bottom: 30px;">
-        <h2 style="font-size: 18px; color: #111827; border-bottom: 1px solid #e5e7eb; padding-bottom: 8px; margin-bottom: 16px;">Key Findings</h2>
-        ${findings.length > 0 ? `
-        <table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 14px;">
-          <thead>
-            <tr style="background-color: #f9fafb;">
-              <th style="border: 1px solid #e5e7eb; padding: 12px; font-weight: 600;">Severity</th>
-              <th style="border: 1px solid #e5e7eb; padding: 12px; font-weight: 600;">Issue Type</th>
-              <th style="border: 1px solid #e5e7eb; padding: 12px; font-weight: 600; text-align: right;">Variance</th>
-              <th style="border: 1px solid #e5e7eb; padding: 12px; font-weight: 600; width: 40%;">Description</th>
-            </tr>
-          </thead>
-          <tbody>
-            ${findings.map(f => `
-              <tr>
-                <td style="border: 1px solid #e5e7eb; padding: 12px; text-transform: capitalize; color: ${f.severity === 'high' ? '#ef4444' : f.severity === 'medium' ? '#f59e0b' : '#3b82f6'}; font-weight: 600;">${f.severity}</td>
-                <td style="border: 1px solid #e5e7eb; padding: 12px; color: #374151;">${escapeHtml(f.issue_type)}</td>
-                <td style="border: 1px solid #e5e7eb; padding: 12px; text-align: right; color: #111827;">$${(f.variance_amount || 0).toLocaleString(undefined, {minimumFractionDigits: 2})}</td>
-                <td style="border: 1px solid #e5e7eb; padding: 12px; color: #4b5563;">${escapeHtml(f.description)}</td>
-              </tr>
-            `).join('')}
-          </tbody>
-        </table>
-        ` : '<p style="color: #6b7280;">No findings detected.</p>'}
-      </div>
-
-      <div style="margin-bottom: 30px;">
-        <h2 style="font-size: 18px; color: #111827; border-bottom: 1px solid #e5e7eb; padding-bottom: 8px; margin-bottom: 16px;">Payment Reconciliation</h2>
-        <div style="display: flex; gap: 40px; margin-bottom: 16px;">
-          <div><strong>Status:</strong> <span style="text-transform: uppercase; color: #374151;">${(report.payment_summary?.status || 'Unknown')}</span></div>
-          <div><strong>Paid Amount:</strong> <span style="color: #10b981;">$${(report.payment_summary?.paid_amount || 0).toLocaleString(undefined, {minimumFractionDigits: 2})}</span></div>
-          <div><strong>Pending Amount:</strong> <span style="color: #f59e0b;">$${(report.payment_summary?.pending_amount || 0).toLocaleString(undefined, {minimumFractionDigits: 2})}</span></div>
-        </div>
-        <p style="color: #4b5563; margin: 0;">${escapeHtml(report.payment_summary?.reasoning || "")}</p>
-      </div>
-
-      <div style="margin-bottom: 30px;">
-        <h2 style="font-size: 18px; color: #111827; border-bottom: 1px solid #e5e7eb; padding-bottom: 8px; margin-bottom: 16px;">Recommended Next Actions</h2>
-        <ul style="color: #4b5563; padding-left: 20px; margin: 0;">
-          ${(report.next_actions || []).map(action => `<li style="margin-bottom: 8px;">${escapeHtml(action)}</li>`).join('')}
-        </ul>
-      </div>
-    </div>
-  `;
+function selectAuditRun(runId) {
+  const run = state.auditHistory.find((item) => item.id === runId);
+  if (!run) {
+    Toast.warning("Result Missing", "That saved result could not be found.");
+    return;
+  }
+  state.activeAuditRunId = run.id;
+  state.auditResult = run.result;
+  router.navigate("results");
 }
 
 function renderPaymentIssues(issues) {
@@ -978,16 +1009,6 @@ function renderCorrectedInvoice(invoice) {
   `;
 }
 
-function renderGuardrails(notes) {
-  if (!notes.length) return "";
-  return `
-    <div class="guardrail-notes reveal visible">
-      <div class="card-title"><span class="icon">🛡️</span> Guardrail Notes</div>
-      ${notes.map((note) => `<div class="guardrail-item"><span>⚠️</span><span>${escapeHtml(note)}</span></div>`).join("")}
-    </div>
-  `;
-}
-
 function renderNextActions(actions) {
   if (!actions.length) return "";
   return `
@@ -1019,7 +1040,10 @@ function renderDonutChart(high, medium, low) {
 }
 
 function showAuditResult(index) {
-  state.auditResult = state.auditHistory[index];
+  const run = state.auditHistory[index];
+  if (!run) return;
+  state.activeAuditRunId = run.id;
+  state.auditResult = run.result;
   router.navigate("results");
 }
 
@@ -1049,6 +1073,18 @@ function formatCurrency(amount) {
 
 function formatType(str) {
   return String(str || "").replace(/_/g, " ").replace(/\b\w/g, (char) => char.toUpperCase());
+}
+
+function formatDateTime(value) {
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return "Unknown time";
+  return date.toLocaleString([], {
+    year: "numeric",
+    month: "short",
+    day: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+  });
 }
 
 function severityBadge(severity = "medium") {
