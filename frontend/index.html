@@ -7,6 +7,12 @@
   <meta name="theme-color" content="#060918">
   <title>RLIP — Revenue Leakage Intelligence Platform</title>
   <link rel="stylesheet" href="styles.css">
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10.4.0/dist/mermaid.min.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      mermaid.initialize({ startOnLoad: true, theme: 'base', themeVariables: { primaryColor: '#0a0e27', primaryTextColor: '#fff', primaryBorderColor: '#00d4ff', lineColor: '#667eea', secondaryColor: '#10b981', tertiaryColor: '#ef4444' } });
+    });
+  </script>
 </head>
 <body>
   <div class="app-layout">
@@ -257,36 +263,53 @@
           <h1>⚗️ Core Processing Pipeline</h1>
           <p>The internal workflow isolating inputs, guardrails, agents, and structured outputs.</p>
         </div>
-        <div class="pipeline-container">
-          <div class="pipeline-stage" style="--delay: 1">
-            <div class="stage-icon">📄</div>
-            <div class="stage-title">1. Inputs</div>
-            <div class="stage-desc">Contracts, Invoices, Evidence, Payment Records</div>
-          </div>
-          <div class="pipeline-connector">
-            <div class="connector-line"></div>
-          </div>
-          <div class="pipeline-stage guardrails" style="--delay: 2">
-            <div class="stage-icon">🛡️</div>
-            <div class="stage-title">2. Guardrails Layer</div>
-            <div class="stage-desc">Validates data formats, redacts PII, sanitizes inputs</div>
-          </div>
-          <div class="pipeline-connector">
-            <div class="connector-line"></div>
-          </div>
-          <div class="pipeline-stage agents" style="--delay: 3">
-            <div class="stage-icon">🤖</div>
-            <div class="stage-title">3. Agentic System</div>
-            <div class="stage-desc">Vision Reader → Rule Extraction → Validation & Correction</div>
-          </div>
-          <div class="pipeline-connector">
-            <div class="connector-line"></div>
-          </div>
-          <div class="pipeline-stage output" style="--delay: 4">
-            <div class="stage-icon">📊</div>
-            <div class="stage-title">4. Structured Output</div>
-            <div class="stage-desc">Pydantic strict schema JSON reports</div>
-          </div>
+        <div class="mermaid-container reveal visible" style="margin-top: 30px; padding: 20px; background: rgba(255,255,255,0.02); border: 1px solid var(--glass-border); border-radius: var(--radius-xl);">
+          <pre class="mermaid" style="display: flex; justify-content: center;">
+flowchart TD
+    classDef input fill:#f8f9fa,stroke:#333,stroke-width:2px,color:#333
+    classDef guard fill:#ef4444,stroke:#fff,stroke-width:2px,color:#fff
+    classDef agent fill:#0a0e27,stroke:#00d4ff,stroke-width:2px,color:#fff
+    classDef output fill:#10b981,stroke:#fff,stroke-width:2px,color:#fff
+
+    subgraph Inputs [1. Inputs]
+        direction LR
+        Agmt[Contracts]:::input
+        Inv[Invoices]:::input
+        Ev[Evidence]:::input
+        Pay[Payment]:::input
+    end
+
+    Guardrails{2. Guardrails Layer}:::guard
+
+    subgraph Agents [3. Agentic Validation System]
+        direction TB
+        Vision[Vision Document Reader]:::agent
+        Intake[Document Intake Agent]:::agent
+        
+        subgraph Extraction
+            Rule[Contract Rule Agent]:::agent
+            Evidence[Evidence Validation Agent]:::agent
+            PaymentRec[Payment Reconciliation Agent]:::agent
+        end
+        
+        InvoiceVal[Invoice Validation Agent]:::agent
+        Correction[Corrected Invoice Generation Agent]:::agent
+        Final[Final Report Agent]:::agent
+        
+        Vision --> Intake
+        Intake --> Rule & Evidence & PaymentRec
+        Rule & Evidence & PaymentRec --> InvoiceVal
+        InvoiceVal -->|Valid| Final
+        InvoiceVal -->|Invalid| Correction
+        Correction --> Final
+    end
+    
+    Output[4. Structured Output Models]:::output
+
+    Inputs --> Guardrails
+    Guardrails -->|Validated Inputs| Agents
+    Agents -->|Pydantic Models| Output
+          </pre>
         </div>
       </div>
 
