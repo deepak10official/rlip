@@ -389,7 +389,7 @@ code, .mono, .preview-kpi-val, .step-num, .home-stat-num {
     linear-gradient(to bottom, transparent 0%, #fff 25%, var(--accent-purple) 50%, transparent 75%) !important;
   background-size: 4px 100%, 4px 32px !important;
   background-repeat: no-repeat, repeat-y !important;
-  animation: purpleLaserFlow 0.8s linear infinite !important;
+  animation: flowMarch 0.8s linear infinite !important;
   filter: drop-shadow(0 0 6px rgba(167, 139, 250, 0.6));
   z-index: 2;
 }
@@ -428,7 +428,7 @@ code, .mono, .preview-kpi-val, .step-num, .home-stat-num {
   background: none !important;
 }
 
-@keyframes purpleLaserFlow {
+@keyframes flowMarch {
   from { background-position: 0 0, 0 -32px; }
   to { background-position: 0 0, 0 32px; }
 }
