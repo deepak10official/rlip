@@ -387,9 +387,18 @@ code, .mono, .preview-kpi-val, .step-num, .home-stat-num {
   background-image: linear-gradient(to bottom, transparent 0%, var(--accent-purple) 50%, transparent 100%) !important;
   background-size: 3px 30px !important;
   background-repeat: repeat-y !important;
-  animation: flowMarchPurple 0.8s linear infinite !important;
   filter: drop-shadow(0 0 4px var(--accent-purple));
   z-index: 2;
+  animation: none !important; /* Prevent initialization on hidden display:none tab */
+}
+
+/* Trigger animation only when the view becomes active on screen */
+#view-pipeline.active .fc-arrow,
+#view-pipeline.active .fc-fork::before,
+#view-pipeline.active .fc-fork::after,
+#view-pipeline.active .fc-join::before,
+#view-pipeline.active .fc-join::after {
+  animation: flowMarchPurple 0.8s linear infinite !important;
 }
 
 .fc-arrow {
@@ -427,6 +436,6 @@ code, .mono, .preview-kpi-val, .step-num, .home-stat-num {
 }
 
 @keyframes flowMarchPurple {
-  from { background-position: 0 0; }
-  to { background-position: 0 30px; }
+  0% { background-position: 0px 0px; }
+  100% { background-position: 0px 30px; }
 }
