@@ -4,9 +4,16 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="RLIP — Revenue Leakage Intelligence Platform. AI-powered agents that detect billing variances, audit invoices, and recover lost revenue.">
-  <meta name="theme-color" content="#060918">
+  <meta name="theme-color" content="#030108">
   <title>RLIP — Revenue Leakage Intelligence Platform</title>
+  
+  <!-- Google Fonts for Outfit & Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@400;600;800;900&display=swap" rel="stylesheet">
+  
   <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="prismatic.css">
 </head>
 <body>
   <div class="app-layout">
@@ -58,169 +65,162 @@
       <div class="view active" id="view-home">
 
         <!-- Hero -->
-        <section class="home-hero">
-          <div class="home-hero-orb orb-1"></div>
-          <div class="home-hero-orb orb-2"></div>
-          <div class="home-hero-orb orb-3"></div>
+        <section class="home-hero premium-hero">
+          <div class="aurora-bg"></div>
+          
           <div class="home-hero-content">
-            <div class="home-logo-wrap">
-              <div class="home-logo">RLIP</div>
-              <div class="home-logo-ring ring-1"></div>
-              <div class="home-logo-ring ring-2"></div>
+            <div class="home-logo-wrap premium-logo-wrap">
+              <div class="home-logo premium-logo">RLIP</div>
             </div>
-            <div class="home-platform-name">Revenue Leakage Intelligence Platform</div>
-            <h1 class="home-headline">
-              Stop Leaving Revenue<br>on the <span class="gradient-text">Table</span>
+            
+            <div class="home-platform-name premium-platform-name">Revenue Leakage Intelligence Platform</div>
+            <h1 class="home-headline premium-headline">
+              Elevate Your <span class="premium-gradient-text">Revenue Integrity</span>
             </h1>
-            <p class="home-subline">
-              AI-powered agents that <strong>detect billing variances</strong>, audit invoices,
-              and <strong>recover lost revenue</strong> — in minutes, not weeks.
+            <p class="home-subline premium-subline">
+              Sophisticated AI agents designed to seamlessly detect billing variances, audit complex invoices, and recover hidden revenue streams instantly.
             </p>
-            <div class="home-ctas">
+            <div class="home-ctas premium-ctas">
               <button class="btn btn-primary btn-lg hero-cta" onclick="router.navigate('upload')">
-                🚀 Start Audit Now
+                Initialize Audit
               </button>
               <button class="btn btn-ghost btn-lg" onclick="router.navigate('audit')">
-                Explore Billing Types →
+                View Validations
               </button>
             </div>
           </div>
         </section>
 
         <!-- Stats Bar -->
-        <section class="home-stats-bar">
-          <div class="home-stat-item">
-            <span class="home-stat-num" id="stat-types">9</span>
-            <span class="home-stat-label">Billing Types</span>
+        <section class="home-stats-bar premium-stats-bar">
+          <div class="home-stat-item premium-stat-item">
+            <span class="home-stat-num premium-stat-num" id="stat-types">9</span>
+            <span class="home-stat-label premium-stat-label">Billing Types</span>
           </div>
-          <div class="home-stat-divider"></div>
-          <div class="home-stat-item">
-            <span class="home-stat-num" id="stat-stages">7</span>
-            <span class="home-stat-label">Pipeline Stages</span>
+          <div class="home-stat-item premium-stat-item">
+            <span class="home-stat-num premium-stat-num" id="stat-stages">7</span>
+            <span class="home-stat-label premium-stat-label">Pipeline Stages</span>
           </div>
-          <div class="home-stat-divider"></div>
-          <div class="home-stat-item">
-            <span class="home-stat-num" id="stat-output">100%</span>
-            <span class="home-stat-label">Structured Output</span>
+          <div class="home-stat-item premium-stat-item">
+            <span class="home-stat-num premium-stat-num" id="stat-output">100%</span>
+            <span class="home-stat-label premium-stat-label">Structured Output</span>
           </div>
-          <div class="home-stat-divider"></div>
-          <div class="home-stat-item">
-            <span class="home-stat-num" id="stat-model">GPT-4o</span>
-            <span class="home-stat-label">AI Engine</span>
+          <div class="home-stat-item premium-stat-item">
+            <span class="home-stat-num premium-stat-num" id="stat-model">GPT-4o</span>
+            <span class="home-stat-label premium-stat-label">AI Engine</span>
           </div>
         </section>
 
         <!-- Feature Cards -->
-        <section class="home-features">
-          <div class="home-section-label">Core Capabilities</div>
-          <div class="home-features-grid">
-            <div class="feature-card feature-blue reveal">
-              <div class="feature-icon-wrap">🔍</div>
-              <div class="feature-title">Invoice Validation</div>
-              <div class="feature-desc">Cross-references every line item against contracts, evidence logs, and payment records to surface discrepancies instantly.</div>
-              <div class="feature-tag">invoice_validation_rules · evidence_rules</div>
+        <section class="home-features premium-section">
+          <div class="home-section-label premium-section-label">Core Capabilities</div>
+          <div class="home-features-grid premium-features-grid">
+            <div class="feature-card reveal premium-card">
+              <div class="feature-icon-wrap premium-icon-wrap">🔍</div>
+              <div class="feature-title premium-feature-title">Invoice Validation</div>
+              <div class="feature-desc premium-feature-desc">Cross-references every line item against contracts, evidence logs, and payment records to surface discrepancies instantly.</div>
+              <div class="feature-tag premium-feature-tag">invoice_validation_rules · evidence_rules</div>
             </div>
-            <div class="feature-card feature-emerald reveal">
-              <div class="feature-icon-wrap">💰</div>
-              <div class="feature-title">Revenue Recovery</div>
-              <div class="feature-desc">Quantifies exact variance amounts per finding to prepare for dispute or resubmission.</div>
-              <div class="feature-tag">variance_amount · actionable_insights</div>
+            <div class="feature-card reveal premium-card">
+              <div class="feature-icon-wrap premium-icon-wrap">💰</div>
+              <div class="feature-title premium-feature-title">Revenue Recovery</div>
+              <div class="feature-desc premium-feature-desc">Quantifies exact variance amounts per finding to prepare for immediate dispute or resubmission.</div>
+              <div class="feature-tag premium-feature-tag">variance_amount · actionable_insights</div>
             </div>
-            <div class="feature-card feature-purple reveal">
-              <div class="feature-icon-wrap">🛡️</div>
-              <div class="feature-title">Guardrailed AI</div>
-              <div class="feature-desc">Every output is validated by a structured schema — no hallucinated figures, no unverified claims. Sources cited per finding.</div>
-              <div class="feature-tag">guardrail_notes · structured_output</div>
+            <div class="feature-card reveal premium-card">
+              <div class="feature-icon-wrap premium-icon-wrap">🛡️</div>
+              <div class="feature-title premium-feature-title">Guardrailed AI</div>
+              <div class="feature-desc premium-feature-desc">Every output is strictly validated by a Pydantic schema—eliminating hallucinated figures and unverified claims.</div>
+              <div class="feature-tag premium-feature-tag">guardrail_notes · structured_output</div>
             </div>
           </div>
         </section>
 
         <!-- How It Works -->
-        <section class="home-how">
-          <div class="home-section-label">How It Works</div>
-          <div class="home-steps">
-            <div class="home-step reveal">
-              <div class="step-num">01</div>
-              <div class="step-icon">📤</div>
-              <div class="step-title">Upload Documents</div>
-              <div class="step-desc">Upload service agreements, invoices, billing evidence, and payment records across 9 supported billing types.</div>
+        <section class="home-how premium-section">
+          <div class="home-section-label premium-section-label">Pipeline Architecture</div>
+          <div class="home-steps premium-steps">
+            <div class="home-step reveal premium-step">
+              <div class="step-num premium-step-num">01</div>
+              <div class="step-icon premium-step-icon">📤</div>
+              <div class="step-title premium-step-title">Upload Documents</div>
+              <div class="step-desc premium-step-desc">Securely upload service agreements, invoices, and payment records into the analysis pipeline.</div>
             </div>
-            <div class="home-step-connector">
-              <div class="connector-fill"></div>
+            <div class="home-step-connector premium-step-connector">
+              <div class="connector-fill premium-connector-fill"></div>
             </div>
-            <div class="home-step reveal">
-              <div class="step-num">02</div>
-              <div class="step-icon">🤖</div>
-              <div class="step-title">AI Audit Pipeline</div>
-              <div class="step-desc">7 specialized AI agents run in sequence — Vision reading, contract analysis, evidence cross-check, and payment reconciliation.</div>
+            <div class="home-step reveal premium-step">
+              <div class="step-num premium-step-num">02</div>
+              <div class="step-icon premium-step-icon">🧠</div>
+              <div class="step-title premium-step-title">AI-Powered Audit</div>
+              <div class="step-desc premium-step-desc">Our proprietary AI agents automatically cross-reference every line item against your negotiated contractual terms.</div>
             </div>
-            <div class="home-step-connector">
-              <div class="connector-fill"></div>
+            <div class="home-step-connector premium-step-connector">
+              <div class="connector-fill premium-connector-fill"></div>
             </div>
-            <div class="home-step reveal">
-              <div class="step-num">03</div>
-              <div class="step-icon">📋</div>
-              <div class="step-title">Structured Results</div>
-              <div class="step-desc">Get a complete audit report with severity-ranked findings, variance amounts, corrected invoices, and next actions.</div>
+            <div class="home-step reveal premium-step">
+              <div class="step-num premium-step-num">03</div>
+              <div class="step-icon premium-step-icon">📈</div>
+              <div class="step-title premium-step-title">Actionable Insights</div>
+              <div class="step-desc premium-step-desc">Instantly identify revenue leakage, generate corrected invoices, and recover lost capital with zero friction.</div>
             </div>
           </div>
         </section>
 
         <!-- Output Preview -->
-        <section class="home-preview">
-          <div class="home-section-label">Sample Audit Output</div>
-          <div class="preview-card">
-            <div class="preview-header">
-              <span class="preview-title">📋 Audit Report — Time &amp; Materials</span>
-              <span class="status-badge invalid">INVALID ❌</span>
+        <section class="home-preview premium-section">
+          <div class="home-section-label premium-section-label">Sample Audit Telemetry</div>
+          <div class="preview-card premium-preview-card">
+            <div class="preview-header premium-preview-header">
+              <span class="preview-title premium-preview-title">📋 Audit Report — Time &amp; Materials</span>
+              <span class="status-badge invalid premium-invalid">INVALID</span>
             </div>
-            <div class="preview-body">
-              <div class="preview-summary">
-                <div class="preview-block-title">Executive Summary</div>
-                <p class="preview-text">Invoice <code>INV-2024-089</code> contains 3 billing discrepancies. Unbilled support hours and an incorrect discount rate result in a total variance of <strong style="color:#10b981;">$32,500</strong>. Corrected invoice draft generated.</p>
-                <div class="preview-kpis">
-                  <div class="preview-kpi"><div class="preview-kpi-val red">3</div><div class="preview-kpi-lab">Findings</div></div>
-                  <div class="preview-kpi"><div class="preview-kpi-val emerald">$32,500</div><div class="preview-kpi-lab">Variance</div></div>
-                  <div class="preview-kpi"><div class="preview-kpi-val blue">87%</div><div class="preview-kpi-lab">Confidence</div></div>
+            <div class="preview-body premium-preview-body">
+              <div class="preview-summary premium-preview-summary">
+                <div class="preview-block-title premium-block-title">Executive Summary</div>
+                <p class="preview-text premium-preview-text">Invoice <code>INV-2024-089</code> contains 3 billing discrepancies. Unbilled support hours and an incorrect discount rate result in a total variance of <strong>$32,500</strong>. Corrected invoice draft generated.</p>
+                <div class="preview-kpis premium-preview-kpis">
+                  <div class="preview-kpi premium-kpi"><div class="preview-kpi-val red">3</div><div class="preview-kpi-lab">Findings</div></div>
+                  <div class="preview-kpi premium-kpi"><div class="preview-kpi-val purple">$32,500</div><div class="preview-kpi-lab">Variance</div></div>
+                  <div class="preview-kpi premium-kpi"><div class="preview-kpi-val silver">87%</div><div class="preview-kpi-lab">Confidence</div></div>
                 </div>
               </div>
-              <div class="preview-findings">
-                <div class="preview-block-title">Findings</div>
-                <div class="preview-finding-row high">
-                  <span class="sev-badge sev-high">HIGH</span>
+              <div class="preview-findings premium-preview-findings">
+                <div class="preview-block-title premium-block-title">Findings</div>
+                <div class="preview-finding-row high premium-finding-row">
+                  <span class="sev-badge sev-high premium-sev-high">HIGH</span>
                   <span class="finding-name">Unbilled Support Hours</span>
                   <span class="finding-amount">$18,500</span>
                 </div>
-                <div class="preview-finding-row high">
-                  <span class="sev-badge sev-high">HIGH</span>
+                <div class="preview-finding-row high premium-finding-row">
+                  <span class="sev-badge sev-high premium-sev-high">HIGH</span>
                   <span class="finding-name">Duplicate Payment Detected</span>
                   <span class="finding-amount">$9,800</span>
                 </div>
-                <div class="preview-finding-row medium">
-                  <span class="sev-badge sev-medium">MED</span>
+                <div class="preview-finding-row medium premium-finding-row">
+                  <span class="sev-badge sev-medium premium-sev-medium">MED</span>
                   <span class="finding-name">Incorrect Discount Applied</span>
                   <span class="finding-amount">$4,200</span>
                 </div>
               </div>
             </div>
-            <div class="preview-footer">
+            <div class="preview-footer premium-preview-footer">
               <span class="preview-footer-item">✏️ Corrected invoice: <strong>$27,050</strong></span>
               <span class="preview-footer-sep">·</span>
-              <span class="preview-footer-item">✅ 4 next actions generated</span>
+              <span class="preview-footer-item">✅ 4 actionable recommendations</span>
               <span class="preview-footer-sep">·</span>
-              <span class="preview-footer-item">🛡️ 2 guardrail notes</span>
+              <span class="preview-footer-item">🛡️ 2 guardrail rules applied</span>
             </div>
           </div>
         </section>
-
 
       </div>
 
       <!-- ── Billing Audit ───────────────────────────────────── -->
       <div class="view" id="view-upload">
-        <div class="page-header">
+        <div class="page-header premium-page-header">
           <h1>📤 Billing Audit</h1>
-          <p>Upload your four document groups and run an AI-powered billing audit.</p>
+          <p>Initialize an AI-powered billing audit sequence across your document corpus.</p>
         </div>
         <div id="upload-status-bar" style="display: none;"></div>
         <div id="upload-type-selector"></div>
@@ -229,83 +229,81 @@
 
       <!-- ── Billing Types ───────────────────────────────────── -->
       <div class="view" id="view-audit">
-        <div class="page-header">
-          <h1>🔍 Billing Types</h1>
-          <p>Explore available billing models and their validation rules.</p>
+        <div class="page-header premium-page-header">
+          <h1>🔍 Validation Models</h1>
+          <p>Explore the supported billing algorithms and their underlying validation rules.</p>
         </div>
-        <div class="billing-types-grid" id="billing-types-grid"></div>
+        <div class="billing-types-grid premium-billing-types-grid" id="billing-types-grid"></div>
         <div id="audit-config"></div>
       </div>
 
       <!-- ── Results ─────────────────────────────────────────── -->
       <div class="view" id="view-results">
-        <div class="page-header">
-          <h1>📋 Audit Results</h1>
-          <p>Detailed findings, payment reconciliation, and corrected invoice drafts.</p>
+        <div class="page-header premium-page-header">
+          <h1>📋 Telemetry &amp; Results</h1>
+          <p>Granular findings, payment reconciliation matrices, and verified invoice corrections.</p>
         </div>
         <div id="results-content"></div>
       </div>
       
       <!-- ── Pipeline ─────────────────────────────────────────── -->
       <div class="view" id="view-pipeline">
-        <div class="page-header">
-          <h1>⚗️ Core Processing Pipeline</h1>
-          <p>The internal workflow isolating inputs, guardrails, agents, and structured outputs.</p>
+        <div class="page-header premium-page-header">
+          <h1>⚗️ Pipeline Architecture</h1>
+          <p>The orchestrated workflow isolating inputs, guardrails, specialized agents, and structured final outputs.</p>
         </div>
         
-        <div class="flowchart-container reveal visible">
-          
+        <div class="flowchart-container reveal visible premium-flowchart-container">
           <!-- 1. Inputs -->
-          <div class="fc-group fc-inputs">
+          <div class="fc-group fc-inputs premium-fc-group">
             <div class="fc-group-title">1. Inputs</div>
             <div class="fc-row">
               <div class="fc-node">📄 Service Agreement</div>
               <div class="fc-node">🧾 Invoices</div>
               <div class="fc-node">🔍 Billing Evidence</div>
-              <div class="fc-node">💳 Previous Payment Records</div>
+              <div class="fc-node">💳 Payment Records</div>
             </div>
           </div>
           
           <div class="fc-arrow"></div>
           
           <!-- 2. Guardrails -->
-          <div class="fc-node fc-guardrails">
-            🛡️ 2. Guardrails Layer
+          <div class="fc-node fc-guardrails premium-fc-node">
+            🛡️ 2. Schema Validation Layer
           </div>
           
           <div class="fc-arrow"></div>
           
           <!-- 3. Agents -->
-          <div class="fc-group fc-agents">
-            <div class="fc-group-title">3. Agentic Validation System</div>
+          <div class="fc-group fc-agents premium-fc-group">
+            <div class="fc-group-title">3. Multi-Agent Inference System</div>
             
-            <div class="fc-node fc-agent">👁️ Vision Document Reader</div>
+            <div class="fc-node fc-agent">👁️ Vision Extraction</div>
             <div class="fc-arrow"></div>
             
-            <div class="fc-node fc-agent">🧭 Audit Context Agent</div>
+            <div class="fc-node fc-agent">🧭 Context Router</div>
             
             <div class="fc-fork"></div>
             <div class="fc-row fc-extraction">
-              <div class="fc-node fc-agent">📜 Contract Rule Agent</div>
-              <div class="fc-node fc-agent">🔎 Evidence Validation Agent</div>
-              <div class="fc-node fc-agent">💵 Payment Reconciliation Agent</div>
+              <div class="fc-node fc-agent">📜 Contract Rules</div>
+              <div class="fc-node fc-agent">🔎 Evidence Log Check</div>
+              <div class="fc-node fc-agent">💵 Payment Reconciliation</div>
             </div>
             <div class="fc-join"></div>
             
-            <div class="fc-node fc-agent">🧾 Invoice Validation Agent</div>
+            <div class="fc-node fc-agent">🧾 Invoice Discrepancy Engine</div>
             
             <div class="fc-arrow"></div>
             
-            <div class="fc-node fc-agent">📊 Final Report Agent</div>
+            <div class="fc-node fc-agent">📊 Report Synthesizer</div>
           </div>
           
           <div class="fc-arrow"></div>
           
           <!-- 4. Output -->
-          <div class="fc-node fc-output">
-            ✨ 4. Structured Output Models (Pydantic)
+          <div class="fc-node fc-output premium-fc-node">
+            ✨ 4. Structured Verified Output
           </div>
-          
         </div>
       </div>
 
@@ -314,7 +312,7 @@
 
   <div class="toast-container" id="toast-container"></div>
   <div class="billing-rules-modal" id="billing-rules-modal" aria-hidden="true" onclick="handleBillingRulesBackdrop(event)">
-    <div class="billing-rules-dialog" role="dialog" aria-modal="true" aria-labelledby="billing-rules-modal-title" tabindex="-1">
+    <div class="billing-rules-dialog premium-billing-rules-dialog" role="dialog" aria-modal="true" aria-labelledby="billing-rules-modal-title" tabindex="-1">
       <button class="modal-close" type="button" onclick="closeBillingRulesModal()" aria-label="Close billing rules">×</button>
       <div id="billing-rules-modal-content"></div>
     </div>
