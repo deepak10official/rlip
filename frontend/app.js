@@ -214,18 +214,12 @@ class Toast {
 }
 
 async function checkHealth() {
-  const dot = document.getElementById("health-dot");
-  const label = document.getElementById("health-label");
   try {
     const data = await api.health();
     state.healthStatus = data;
-    dot.className = "health-dot online";
-    label.textContent = `Online · ${data.model}`;
     return true;
   } catch {
     state.healthStatus = null;
-    dot.className = "health-dot offline";
-    label.textContent = "Backend Offline";
     return false;
   }
 }

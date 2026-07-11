@@ -355,7 +355,7 @@ button {
   border-top: 1px solid var(--glass-border);
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
 }
 
 .theme-toggle {
@@ -376,41 +376,9 @@ button {
 }
 
 
-.health-indicator {
-  display: flex;
-  align-items: center;
-  gap: 9px;
-  color: var(--text-secondary);
-  font-size: 13px;
-}
-
-.health-dot {
-  width: 9px;
-  height: 9px;
-  border-radius: 999px;
-  background: var(--error);
-  box-shadow: 0 0 10px var(--error);
-}
-
-.health-dot.online {
-  background: var(--success);
-  box-shadow: 0 0 10px var(--success);
-}
-
-.sidebar.collapsed .health-label {
-  display: none;
-}
-
 .sidebar.collapsed .sidebar-footer {
-  flex-direction: column;
-  gap: 10px;
   justify-content: center;
-  align-items: center;
   padding: 12px 8px;
-}
-
-.sidebar.collapsed .health-indicator {
-  justify-content: center;
 }
 
 .view {
