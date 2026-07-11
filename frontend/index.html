@@ -11,7 +11,7 @@
 <body>
   <div class="app-layout">
     <aside class="sidebar" id="sidebar">
-      <div class="sidebar-header">
+      <div class="sidebar-header" onclick="toggleSidebar()" title="Toggle Sidebar" style="cursor: pointer;">
         <div class="brand-logo">
           <div class="brand-icon">R</div>
           <div class="brand-text">
@@ -19,7 +19,6 @@
             <span class="brand-subtitle">Revenue Leakage Intelligence Platform</span>
           </div>
         </div>
-        <button class="sidebar-toggle" onclick="toggleSidebar()" title="Toggle sidebar">☰</button>
       </div>
 
       <nav class="sidebar-nav">
@@ -40,9 +39,9 @@
           <span class="nav-label">Results</span>
         </a>
         <div style="flex-grow: 1;"></div>
-        <a class="nav-item" data-route="pipeline" style="min-height: 36px; opacity: 0.7; border-top: 1px solid var(--glass-border); border-radius: 0; padding-top: 10px; margin-top: 10px;">
-          <span class="nav-icon" style="font-size: 14px;">⚗️</span>
-          <span class="nav-label" style="font-size: 12px; text-transform: uppercase; font-weight: 800; letter-spacing: 1px;">Pipeline</span>
+        <a class="nav-item nav-pipeline" data-route="pipeline">
+          <span class="nav-icon">⚙️</span>
+          <span class="nav-label">Pipeline</span>
         </a>
       </nav>
 

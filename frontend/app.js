@@ -801,10 +801,11 @@ function renderResults(report, container, activeRun = null) {
   const highCount = findings.filter((finding) => finding.severity === "high").length;
   const medCount = findings.filter((finding) => finding.severity === "medium").length;
   const lowCount = findings.filter((finding) => finding.severity === "low").length;
+  const runCount = state.auditHistory.length;
 
   container.innerHTML = `
-    ${renderAuditHistoryPanel(activeRun?.id)}
-    ${activeRun ? renderActiveRunBanner(activeRun) : ""}
+    ${renderHistoryDrawer(activeRun?.id)}
+    ${renderResultsTopBar(activeRun, runCount)}
     <div class="results-grid reveal visible">
       <div class="executive-summary">
         <div class="card-title"><span class="icon">📋</span> Executive Summary</div>
@@ -848,32 +849,39 @@ function renderResults(report, container, activeRun = null) {
     ${renderCorrectedInvoice(report.corrected_invoice)}
     ${renderNextActions(report.next_actions || [])}
   `;
-  bindAuditHistoryEvents(container);
+  bindResultsPageEvents(container);
 }
 
-function renderAuditHistoryPanel(activeId) {
+function renderHistoryDrawer(activeId) {
   if (!state.auditHistory.length) return "";
-
   return `
-    <div class="audit-history-panel reveal visible">
-      <div class="audit-history-header">
+    <div class="history-drawer-backdrop" id="history-drawer-backdrop" onclick="closeHistoryDrawer()"></div>
+    <div class="history-drawer" id="history-drawer" role="dialog" aria-label="Run History" aria-hidden="true">
+      <div class="history-drawer-header">
         <div>
-          <div class="card-title"><span class="icon">🗂️</span> Result History</div>
-          <div class="audit-history-count">${state.auditHistory.length} saved run${state.auditHistory.length !== 1 ? "s" : ""}</div>
+          <div class="history-drawer-title">🗂️ Run History</div>
+          <div class="history-drawer-count">${state.auditHistory.length} saved run${state.auditHistory.length !== 1 ? "s" : ""}</div>
         </div>
+        <button class="history-drawer-close" onclick="closeHistoryDrawer()" aria-label="Close history">✕</button>
       </div>
-      <div class="audit-history-list">
-        ${state.auditHistory.map((run) => `
-          <button class="audit-history-item ${run.id === activeId ? "active" : ""}" type="button" data-audit-run-id="${escapeHtml(run.id)}" aria-current="${run.id === activeId ? "true" : "false"}">
-            <div class="history-run-main">
-              <span class="history-run-id">${escapeHtml(run.id)}</span>
-              ${statusBadge(run.status)}
-            </div>
-            <div class="history-run-meta">
-              <span>${escapeHtml(formatType(run.billing_type))}</span>
-              <span>${escapeHtml(formatDateTime(run.completed_at))}</span>
-              <span>${run.finding_count || 0} finding${run.finding_count === 1 ? "" : "s"}</span>
-              <span>${formatCurrency(run.total_variance || 0)}</span>
+      <div class="history-drawer-list">
+        ${state.auditHistory.map((run, idx) => `
+          <button class="history-drawer-item ${run.id === activeId ? "active" : ""}" type="button" data-audit-run-id="${escapeHtml(run.id)}" aria-current="${run.id === activeId ? "true" : "false"}">
+            <div class="hdi-index">${idx + 1}</div>
+            <div class="hdi-body">
+              <div class="hdi-top">
+                <span class="hdi-id">${escapeHtml(run.id)}</span>
+                ${statusBadge(run.status)}
+              </div>
+              <div class="hdi-meta">
+                <span>${escapeHtml(formatType(run.billing_type))}</span>
+                <span class="hdi-sep">·</span>
+                <span>${escapeHtml(formatDateTime(run.completed_at))}</span>
+                <span class="hdi-sep">·</span>
+                <span>${run.finding_count || 0} finding${run.finding_count === 1 ? "" : "s"}</span>
+                <span class="hdi-sep">·</span>
+                <span>${formatCurrency(run.total_variance || 0)}</span>
+              </div>
             </div>
           </button>
         `).join("")}
@@ -882,25 +890,54 @@ function renderAuditHistoryPanel(activeId) {
   `;
 }
 
-function renderActiveRunBanner(run) {
+function renderResultsTopBar(activeRun, runCount) {
+  if (!activeRun) return "";
   return `
-    <div class="active-run-strip reveal visible">
-      <div>
-        <div class="active-run-label">Selected Run</div>
-        <div class="active-run-id">${escapeHtml(run.id)}</div>
+    <div class="results-top-bar reveal visible">
+      <div class="results-top-bar-left">
+        <div class="rtb-label">Latest Result</div>
+        <div class="rtb-id">${escapeHtml(activeRun.id)}</div>
+        <div class="rtb-meta">
+          <span>${escapeHtml(formatDateTime(activeRun.completed_at))}</span>
+          <span class="hdi-sep">·</span>
+          <span>${escapeHtml(formatType(activeRun.billing_type))}</span>
+          <span class="hdi-sep">·</span>
+          <span>${statusBadge(activeRun.status)}</span>
+        </div>
       </div>
-      <div class="active-run-meta">
-        <span>${escapeHtml(formatDateTime(run.completed_at))}</span>
-        <span>${escapeHtml(formatType(run.billing_type))}</span>
-        <span>${statusBadge(run.status)}</span>
-      </div>
+      ${runCount > 1 ? `
+      <button class="btn-history-open" id="btn-history-open" onclick="openHistoryDrawer()" aria-label="View run history">
+        <span class="btn-history-icon">🗂️</span>
+        <span>History</span>
+        <span class="btn-history-badge">${runCount}</span>
+      </button>
+      ` : ""}
     </div>
   `;
 }
 
-function bindAuditHistoryEvents(container) {
+function openHistoryDrawer() {
+  const drawer = document.getElementById("history-drawer");
+  const backdrop = document.getElementById("history-drawer-backdrop");
+  if (drawer) { drawer.classList.add("open"); drawer.setAttribute("aria-hidden", "false"); }
+  if (backdrop) backdrop.classList.add("visible");
+  document.body.classList.add("drawer-open");
+}
+
+function closeHistoryDrawer() {
+  const drawer = document.getElementById("history-drawer");
+  const backdrop = document.getElementById("history-drawer-backdrop");
+  if (drawer) { drawer.classList.remove("open"); drawer.setAttribute("aria-hidden", "true"); }
+  if (backdrop) backdrop.classList.remove("visible");
+  document.body.classList.remove("drawer-open");
+}
+
+function bindResultsPageEvents(container) {
   container.querySelectorAll("[data-audit-run-id]").forEach((button) => {
-    button.addEventListener("click", () => selectAuditRun(button.dataset.auditRunId));
+    button.addEventListener("click", () => {
+      selectAuditRun(button.dataset.auditRunId);
+      closeHistoryDrawer();
+    });
   });
 }
 
