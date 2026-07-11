@@ -11,13 +11,13 @@
   --glass-border-hover: rgba(124, 58, 237, 0.5); /* Purple hover border */
   --gradient-brand: linear-gradient(135deg, #7c3aed 0%, #a78bfa 100%); /* Dark Purple */
   --gradient-glow: linear-gradient(135deg, #E1DDEB, #a78bfa, #7c3aed);
-  --accent-blue: #7c3aed; /* Map blue to purple */
-  --accent-purple: #a78bfa; /* Map purple to light purple */
-  --accent-cyan: #7c3aed; /* Map cyan to purple */
+  --accent-blue: #3b82f6; /* Beautiful Tech Blue */
+  --accent-purple: #a78bfa; /* Premium Violet */
+  --accent-cyan: #06b6d4; /* High-tech Cyan */
   --success: #10b981;
   --success-dim: rgba(16, 185, 129, 0.1);
-  --warning: #7c3aed;
-  --warning-dim: rgba(124, 58, 237, 0.1);
+  --warning: #f59e0b; /* Amber */
+  --warning-dim: rgba(245, 158, 11, 0.1);
   --error: #ef4444;
   --error-dim: rgba(239, 68, 68, 0.1);
   --text-primary: #E1DDEB; /* Iridescent Silver */
@@ -266,12 +266,6 @@ code, .mono, .preview-kpi-val, .step-num, .home-stat-num {
   border-radius: var(--radius-lg) !important;
 }
 
-.fc-arrow::after {
-  border-left-color: var(--text-tertiary) !important;
-}
-.fc-arrow {
-  background: var(--text-tertiary) !important;
-}
 
 .preview-finding-row, .detail-item, .rule-item, .rules-modal-flow, .history-drawer-item {
   background: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.01) 100%), var(--glass-bg) !important;
@@ -380,10 +374,16 @@ code, .mono, .preview-kpi-val, .step-num, .home-stat-num {
 }
 
 /* Glowing Purple Laser Flow Lines */
+
+/* Vertical lines: fc-arrow and the vertical fork/join line segments */
 .fc-arrow,
-.fc-fork::before, .fc-fork::after,
-.fc-join::before, .fc-join::after {
+.fc-line-in,
+.fc-line-left-v,
+.fc-line-mid-v,
+.fc-line-right-v,
+.fc-line-out {
   width: 3px !important;
+  background-color: transparent !important;
   background-image: linear-gradient(to bottom, transparent 0%, var(--accent-purple) 50%, transparent 100%) !important;
   background-size: 3px 30px !important;
   background-repeat: repeat-y !important;
@@ -392,13 +392,265 @@ code, .mono, .preview-kpi-val, .step-num, .home-stat-num {
   animation: none !important; /* Prevent initialization on hidden display:none tab */
 }
 
+/* Horizontal lines in the fork/join structures */
+.fc-line-left-h,
+.fc-line-right-h {
+  height: 3px !important;
+  background-color: transparent !important;
+  background-size: 30px 3px !important;
+  background-repeat: repeat-x !important;
+  filter: drop-shadow(0 0 4px var(--accent-purple));
+  z-index: 2;
+  animation: none !important;
+}
+
+/* Position and flow direction definitions */
+.fc-line-in,
+.fc-line-left-v,
+.fc-line-mid-v,
+.fc-line-right-v,
+.fc-line-out,
+.fc-line-left-h,
+.fc-line-right-h {
+  position: absolute;
+}
+
+/* 1. Fork placements and flow directions */
+.fc-fork .fc-line-in {
+  top: -30px;
+  left: 50%;
+  transform: translateX(-50%);
+  height: 30px;
+}
+.fc-fork .fc-line-left-h {
+  top: 0;
+  left: 0;
+  width: 50%;
+  background-image: linear-gradient(to left, transparent 0%, var(--accent-purple) 50%, transparent 100%) !important;
+}
+.fc-fork .fc-line-left-v {
+  top: 0;
+  left: 0;
+  height: 30px;
+}
+.fc-fork .fc-line-mid-v {
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  height: 30px;
+}
+.fc-fork .fc-line-right-h {
+  top: 0;
+  left: 50%;
+  width: 50%;
+  background-image: linear-gradient(to right, transparent 0%, var(--accent-purple) 50%, transparent 100%) !important;
+}
+.fc-fork .fc-line-right-v {
+  top: 0;
+  right: 0;
+  height: 30px;
+}
+
+/* 2. Join placements and flow directions */
+.fc-join .fc-line-left-v {
+  top: 0;
+  left: 0;
+  height: 30px;
+}
+.fc-join .fc-line-left-h {
+  bottom: 0;
+  left: 0;
+  width: 50%;
+  background-image: linear-gradient(to right, transparent 0%, var(--accent-purple) 50%, transparent 100%) !important;
+}
+.fc-join .fc-line-mid-v {
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  height: 30px;
+}
+.fc-join .fc-line-right-v {
+  top: 0;
+  right: 0;
+  height: 30px;
+}
+.fc-join .fc-line-right-h {
+  bottom: 0;
+  left: 50%;
+  width: 50%;
+  background-image: linear-gradient(to left, transparent 0%, var(--accent-purple) 50%, transparent 100%) !important;
+}
+.fc-join .fc-line-out {
+  bottom: -30px;
+  left: 50%;
+  transform: translateX(-50%);
+  height: 30px;
+}
+
+/* Disable old borders, shadows, backgrounds on structural fork/join bridges */
+.fc-fork, .fc-join {
+  width: 472px !important;
+  border: none !important;
+  box-shadow: none !important;
+  background: none !important;
+}
+
+/* Align agents to equal widths to match the fork/join centers, and center text lines */
+.fc-extraction .fc-node {
+  width: 220px !important;
+  box-sizing: border-box !important;
+}
+
+.fc-node {
+  text-align: center !important;
+}
+
+/* Color-graded nodes for visual differentiation */
+
+/* Group 1: Inputs (Green) */
+.fc-inputs .fc-node {
+  border-color: rgba(16, 185, 129, 0.35) !important;
+  background: rgba(16, 185, 129, 0.05) !important;
+  box-shadow: 0 4px 15px rgba(16, 185, 129, 0.08) !important;
+}
+.fc-inputs .fc-node:hover {
+  border-color: var(--success) !important;
+  box-shadow: 0 4px 20px rgba(16, 185, 129, 0.25) !important;
+}
+
+/* Guardrails (Red) */
+.fc-guardrails {
+  border-color: rgba(239, 68, 68, 0.35) !important;
+  background: rgba(239, 68, 68, 0.05) !important;
+  box-shadow: 0 4px 15px rgba(239, 68, 68, 0.08) !important;
+}
+.fc-guardrails:hover {
+  border-color: var(--error) !important;
+  box-shadow: 0 4px 20px rgba(239, 68, 68, 0.25) !important;
+}
+
+/* Agents (Blue) */
+.fc-agent {
+  border-color: rgba(59, 130, 246, 0.35) !important;
+  background: rgba(59, 130, 246, 0.05) !important;
+  box-shadow: 0 4px 15px rgba(59, 130, 246, 0.08) !important;
+}
+.fc-agent:hover {
+  border-color: #3b82f6 !important;
+  box-shadow: 0 4px 20px rgba(59, 130, 246, 0.25) !important;
+}
+
+/* Output (Green) */
+.fc-output:not(.fc-synthesizer) {
+  border-color: rgba(16, 185, 129, 0.35) !important;
+  background: rgba(16, 185, 129, 0.05) !important;
+  box-shadow: 0 4px 15px rgba(16, 185, 129, 0.08) !important;
+}
+.fc-output:not(.fc-synthesizer):hover {
+  border-color: var(--success) !important;
+  box-shadow: 0 4px 20px rgba(16, 185, 129, 0.25) !important;
+}
+
+/* Synthesizer (Indigo) */
+.fc-synthesizer {
+  border-color: rgba(99, 102, 241, 0.35) !important;
+  background: rgba(99, 102, 241, 0.05) !important;
+  box-shadow: 0 4px 15px rgba(99, 102, 241, 0.08) !important;
+}
+.fc-synthesizer:hover {
+  border-color: #6366f1 !important;
+  box-shadow: 0 4px 20px rgba(99, 102, 241, 0.25) !important;
+}
+
+/* Color-graded arrows */
+.fc-arrow-success {
+  background-image: linear-gradient(to bottom, transparent 0%, var(--success) 50%, transparent 100%) !important;
+  filter: drop-shadow(0 0 4px var(--success)) !important;
+}
+.fc-arrow-success::after {
+  border-color: var(--success) transparent transparent transparent !important;
+}
+
+.fc-arrow-agent {
+  background-image: linear-gradient(to bottom, transparent 0%, #3b82f6 50%, transparent 100%) !important;
+  filter: drop-shadow(0 0 4px #3b82f6) !important;
+}
+.fc-arrow-agent::after {
+  border-color: #3b82f6 transparent transparent transparent !important;
+}
+
+.fc-arrow-guardrail {
+  background-image: linear-gradient(to bottom, transparent 0%, var(--error) 50%, transparent 100%) !important;
+  filter: drop-shadow(0 0 4px var(--error)) !important;
+}
+.fc-arrow-guardrail::after {
+  border-color: var(--error) transparent transparent transparent !important;
+}
+
+.fc-arrow-synthesizer {
+  background-image: linear-gradient(to bottom, transparent 0%, #6366f1 50%, transparent 100%) !important;
+  filter: drop-shadow(0 0 4px #6366f1) !important;
+}
+.fc-arrow-synthesizer::after {
+  border-color: #6366f1 transparent transparent transparent !important;
+}
+
+/* Connectors inside agents block (Blue) */
+.fc-fork .fc-line-in,
+.fc-fork .fc-line-left-v,
+.fc-fork .fc-line-mid-v,
+.fc-fork .fc-line-right-v,
+.fc-join .fc-line-left-v,
+.fc-join .fc-line-mid-v,
+.fc-join .fc-line-right-v,
+.fc-join .fc-line-out {
+  background-image: linear-gradient(to bottom, transparent 0%, #3b82f6 50%, transparent 100%) !important;
+  filter: drop-shadow(0 0 4px #3b82f6) !important;
+}
+
+.fc-fork .fc-line-left-h {
+  background-image: linear-gradient(to left, transparent 0%, #3b82f6 50%, transparent 100%) !important;
+  filter: drop-shadow(0 0 4px #3b82f6) !important;
+}
+.fc-fork .fc-line-right-h {
+  background-image: linear-gradient(to right, transparent 0%, #3b82f6 50%, transparent 100%) !important;
+  filter: drop-shadow(0 0 4px #3b82f6) !important;
+}
+
+.fc-join .fc-line-left-h {
+  background-image: linear-gradient(to right, transparent 0%, #3b82f6 50%, transparent 100%) !important;
+  filter: drop-shadow(0 0 4px #3b82f6) !important;
+}
+.fc-join .fc-line-right-h {
+  background-image: linear-gradient(to left, transparent 0%, #3b82f6 50%, transparent 100%) !important;
+  filter: drop-shadow(0 0 4px #3b82f6) !important;
+}
+
+/* Disable the old CSS pseudo-elements from styles.css */
+.fc-fork::before, .fc-fork::after,
+.fc-join::before, .fc-join::after {
+  display: none !important;
+  content: none !important;
+}
+
 /* Trigger animation only when the view becomes active on screen */
 #view-pipeline.active .fc-arrow,
-#view-pipeline.active .fc-fork::before,
-#view-pipeline.active .fc-fork::after,
-#view-pipeline.active .fc-join::before,
-#view-pipeline.active .fc-join::after {
+#view-pipeline.active .fc-line-in,
+#view-pipeline.active .fc-line-left-v,
+#view-pipeline.active .fc-line-mid-v,
+#view-pipeline.active .fc-line-right-v,
+#view-pipeline.active .fc-line-out {
   animation: flowMarchPurple 0.8s linear infinite !important;
+}
+
+#view-pipeline.active .fc-fork .fc-line-left-h,
+#view-pipeline.active .fc-join .fc-line-right-h {
+  animation: flowMarchPurpleLeft 0.8s linear infinite !important;
+}
+
+#view-pipeline.active .fc-fork .fc-line-right-h,
+#view-pipeline.active .fc-join .fc-line-left-h {
+  animation: flowMarchPurpleRight 0.8s linear infinite !important;
 }
 
 .fc-arrow {
@@ -416,26 +668,258 @@ code, .mono, .preview-kpi-val, .step-num, .home-stat-num {
   border-color: var(--accent-purple) transparent transparent transparent !important;
 }
 
-/* Restore solid clean purple borders for structural fork/join bridges */
-.fc-fork {
-  border-top: 2px solid rgba(167, 139, 250, 0.4) !important;
-  border-left: 2px solid rgba(167, 139, 250, 0.4) !important;
-  border-right: 2px solid rgba(167, 139, 250, 0.4) !important;
-  border-radius: 6px 6px 0 0 !important;
-  box-shadow: 0 -2px 10px rgba(124, 58, 237, 0.15) !important;
-  background: none !important;
-}
-
-.fc-join {
-  border-bottom: 2px solid rgba(167, 139, 250, 0.4) !important;
-  border-left: 2px solid rgba(167, 139, 250, 0.4) !important;
-  border-right: 2px solid rgba(167, 139, 250, 0.4) !important;
-  border-radius: 0 0 6px 6px !important;
-  box-shadow: 0 2px 10px rgba(124, 58, 237, 0.15) !important;
-  background: none !important;
-}
-
 @keyframes flowMarchPurple {
   0% { background-position: 0px 0px; }
   100% { background-position: 0px 30px; }
 }
+
+@keyframes flowMarchPurpleLeft {
+  0% { background-position: 0px 0px; }
+  100% { background-position: -30px 0px; }
+}
+
+@keyframes flowMarchPurpleRight {
+  0% { background-position: 0px 0px; }
+  100% { background-position: 30px 0px; }
+}
+
+/* ── Tech Stack View ─────────────────────────────────────── */
+
+.nav-item.nav-stack {
+  min-height: 42px;
+  opacity: 0.72;
+}
+
+.nav-item.nav-stack:hover {
+  opacity: 1;
+}
+
+.nav-stack .nav-label {
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.sidebar.collapsed .nav-item.nav-stack {
+  width: 44px;
+  height: 44px;
+  min-height: 44px;
+  padding: 0;
+  margin: 0 auto;
+  justify-content: center;
+  border-radius: var(--radius-md);
+}
+
+.stack-overview {
+  display: grid;
+  gap: 14px;
+}
+
+.stack-section {
+  padding: 18px;
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-xl);
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.07), rgba(255, 255, 255, 0.012)),
+    var(--bg-secondary);
+  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.14), var(--shadow-premium);
+}
+
+.stack-section-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 14px;
+  margin-bottom: 12px;
+}
+
+.stack-section-header span {
+  color: var(--text-primary);
+  font-family: var(--font-display);
+  font-size: 20px;
+  font-weight: 800;
+}
+
+.stack-section-header small {
+  color: var(--text-tertiary);
+  font-size: 12px;
+  font-weight: 700;
+  text-align: right;
+}
+
+.stack-logo-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.stack-logo-grid-compact {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.stack-logo-card {
+  display: grid;
+  min-height: 132px;
+  place-items: center;
+  padding: 14px 10px;
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  border-radius: var(--radius-lg);
+  background: rgba(255, 255, 255, 0.035);
+  text-align: center;
+  transition: transform 180ms ease, border-color 180ms ease, background 180ms ease;
+}
+
+.stack-logo-card:hover {
+  transform: translateY(-2px);
+  border-color: rgba(167, 139, 250, 0.45);
+  background: rgba(255, 255, 255, 0.055);
+}
+
+.stack-logo-card img,
+.stack-letter-logo {
+  width: 50px;
+  height: 50px;
+  margin-bottom: 10px;
+}
+
+.stack-logo-card img {
+  object-fit: contain;
+  padding: 9px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.92);
+}
+
+.stack-letter-logo {
+  display: grid;
+  place-items: center;
+  border-radius: 14px;
+  background: rgba(16, 185, 129, 0.14);
+  color: var(--success);
+  font-family: var(--font-display);
+  font-size: 16px;
+  font-weight: 900;
+}
+
+.stack-logo-card strong {
+  display: block;
+  color: var(--text-primary);
+  font-family: var(--font-display);
+  font-size: 15px;
+  font-weight: 800;
+}
+
+.stack-logo-card span {
+  display: block;
+  max-width: 100%;
+  margin-top: 3px;
+  overflow-wrap: anywhere;
+  color: var(--text-secondary);
+  font-size: 12px;
+  line-height: 1.35;
+}
+
+.stack-chip-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.stack-chip-row span {
+  display: inline-flex;
+  align-items: center;
+  min-height: 30px;
+  padding: 5px 11px;
+  border: 1px solid rgba(167, 139, 250, 0.26);
+  border-radius: 999px;
+  background: rgba(124, 58, 237, 0.1);
+  color: var(--text-primary);
+  font-family: var(--font-display);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+@media (max-width: 980px) {
+  .stack-logo-grid,
+  .stack-logo-grid-compact {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 560px) {
+  .stack-section {
+    padding: 16px;
+  }
+
+  .stack-section-header {
+    display: block;
+  }
+
+  .stack-section-header small {
+    display: block;
+    margin-top: 2px;
+    text-align: left;
+  }
+
+  .stack-logo-grid,
+  .stack-logo-grid-compact {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ── Hover Card Tooltips ────────────────────────────────── */
+.fc-hover-card {
+  position: fixed;
+  pointer-events: none; /* Ignore mouse events to prevent flicker */
+  z-index: 10000;
+  max-width: 280px;
+  padding: 14px 18px;
+  border-radius: var(--radius-lg);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.06) 0%, rgba(255, 255, 255, 0.015) 100%), rgba(10, 5, 20, 0.95);
+  backdrop-filter: blur(16px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  color: var(--text-primary);
+  font-size: 13px;
+  line-height: 1.5;
+  opacity: 0;
+  transform: translateY(6px) scale(0.96);
+  transition: opacity 0.2s cubic-bezier(0.16, 1, 0.3, 1), transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  font-family: var(--font-sans);
+}
+
+.fc-hover-card.visible {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+.fc-hover-card-title {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 14px;
+  color: var(--accent-purple);
+  margin-bottom: 6px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.fc-hover-card-desc {
+  color: var(--text-secondary);
+}
+
+/* Make nodes indicate that they are hoverable */
+.fc-node {
+  cursor: help !important;
+  transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease !important;
+}
+
+.fc-node:hover {
+  transform: translateY(-2px) scale(1.02);
+  border-color: var(--accent-purple) !important;
+  box-shadow: 0 4px 20px rgba(167, 139, 250, 0.2) !important;
+}
+
+
+

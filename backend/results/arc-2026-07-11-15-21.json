@@ -1,0 +1,118 @@
+{
+  "id": "arc-2026-07-11-15-21",
+  "billing_type": "arc",
+  "completed_at": "2026-07-11T15:21:28.192083+05:30",
+  "status": "needs_review",
+  "finding_count": 4,
+  "total_variance": 0.0,
+  "document_count": 3,
+  "result": {
+    "audit_id": "arc-2026-07-11-15-21",
+    "completed_at": "2026-07-11T15:21:28.192083+05:30",
+    "status": "needs_review",
+    "billing_type": "arc",
+    "executive_summary": "The OmniRetail July 2026 ARC invoice cannot be fully validated from the packet. The USD 70,000 invoice amount matches the OmniRetail ledger monthly ARC floor of 70,000, but ARC rules require contract pricing/rate terms and independent consumption evidence. The packet lacks an actual service agreement, Annexure 2, and resource-level usage logs. Payment reconciliation also needs review because the only payment record is for DeltaBank, not OmniRetail.",
+    "validation_report": {
+      "status": "needs_review",
+      "billing_type": "arc",
+      "summary": "Invoice generation is not proven valid or invalid. The invoice ties to the ledger monthly floor, but required ARC evidence is missing or inconclusive.",
+      "findings": [
+        {
+          "finding_type": "missing_contract_terms",
+          "description": "The document labeled service_agreement is visibly an invoice and does not define ARC resource categories, usage units, pricing tiers, rate card, or required evidence for Contract ID C-SVC-ARC-001.",
+          "source_documents": [
+            "inv_arc_001_omniretail.docx"
+          ],
+          "expected_value": "Executed service agreement or approved rate card for C-SVC-ARC-001",
+          "actual_value": "Invoice document only",
+          "variance_amount": null,
+          "severity": "high",
+          "recommended_action": "Obtain the executed service agreement or approved rate card."
+        },
+        {
+          "finding_type": "missing_usage_evidence",
+          "description": "Raw billing evidence duplicates the invoice and does not provide independent ARC consumption logs, measured units, account/resource identifiers, or pricing inputs.",
+          "source_documents": [
+            "inv_arc_001_omniretail.docx"
+          ],
+          "expected_value": "July 2026 OmniRetail ARC consumption report/logs",
+          "actual_value": "Invoice duplicate only",
+          "variance_amount": null,
+          "severity": "high",
+          "recommended_action": "Provide July 2026 consumption evidence with quantities, units, resource/account scope, and pricing inputs."
+        },
+        {
+          "finding_type": "partial_ledger_tie_out",
+          "description": "The invoice bills USD 70,000.00 for Digital Run ARC monthly floor, July 2026. The ledger shows Monthly ARC floor 70,000 and YTD floor consumed 70,000, which matches. However, the ledger also shows actual platform run consumption of 72,800 marked ledger-only, and contract treatment is unclear.",
+          "source_documents": [
+            "inv_arc_001_omniretail.docx",
+            "omniretail_arc_ledger_july_export_a.xlsx"
+          ],
+          "expected_value": "Contract-supported treatment of monthly floor versus actual consumption",
+          "actual_value": "USD 70,000 floor billed; USD 72,800 consumption tracked as ledger-only",
+          "variance_amount": null,
+          "severity": "medium",
+          "recommended_action": "Confirm whether the contract permits billing only the monthly floor when actual consumption is 72,800."
+        },
+        {
+          "finding_type": "unrelated_payment_record",
+          "description": "The provided payment record is for DeltaBank INV-ARC-002 / C-SVC-ARC-002 / USD 100,000.00, not OmniRetail invoice E9932206339 / C-SVC-ARC-001 / USD 70,000.00.",
+          "source_documents": [
+            "deltabank_pending_payment_record_02.docx",
+            "inv_arc_001_omniretail.docx"
+          ],
+          "expected_value": "Payment record for OmniRetail invoice E9932206339",
+          "actual_value": "Payment record for DeltaBank INV-ARC-002",
+          "variance_amount": null,
+          "severity": "low",
+          "recommended_action": "Request the matching OmniRetail payment record."
+        }
+      ],
+      "source_documents": [
+        "inv_arc_001_omniretail.docx",
+        "omniretail_arc_ledger_july_export_a.xlsx",
+        "deltabank_pending_payment_record_02.docx"
+      ],
+      "confidence": 0.86
+    },
+    "payment_summary": {
+      "status": "needs_review",
+      "issues": [
+        {
+          "issue_type": "wrong_invoice_or_customer_reference",
+          "description": "Only payment record provided is for DeltaBank, not OmniRetail.",
+          "amount": null,
+          "source_document": "deltabank_pending_payment_record_02.docx",
+          "severity": "high"
+        },
+        {
+          "issue_type": "missing_matching_payment_record",
+          "description": "No payment record is provided for OmniRetail invoice E9932206339 / C-SVC-ARC-001.",
+          "amount": 70000.0,
+          "source_document": "inv_arc_001_omniretail.docx",
+          "severity": "high"
+        }
+      ],
+      "paid_amount": null,
+      "pending_amount": 70000.0,
+      "reasoning": "The DeltaBank payment record cannot be applied to the OmniRetail invoice. No source-backed paid amount is available for OmniRetail, so the USD 70,000.00 invoice remains unreconciled pending a matching payment record."
+    },
+    "corrected_invoice": null,
+    "source_documents": [
+      "inv_arc_001_omniretail.docx",
+      "omniretail_arc_ledger_july_export_a.xlsx",
+      "deltabank_pending_payment_record_02.docx"
+    ],
+    "guardrail_notes": [
+      "Do not treat the DeltaBank payment as payment against OmniRetail.",
+      "No corrected invoice is drafted because the invoice is not proven invalid and the packet lacks enough contract/usage evidence to recalculate ARC charges."
+    ],
+    "next_actions": [
+      "Obtain the executed service agreement or approved rate card for C-SVC-ARC-001.",
+      "Provide Annexure 2 referenced by the invoice.",
+      "Provide July 2026 OmniRetail ARC consumption logs/reports with quantities, units, resource/account identifiers, and pricing inputs.",
+      "Confirm contractual treatment of the USD 70,000 monthly floor versus USD 72,800 actual platform run consumption.",
+      "Provide the matching OmniRetail payment record for invoice E9932206339."
+    ]
+  }
+}

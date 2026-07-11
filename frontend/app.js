@@ -1143,12 +1143,79 @@ function escapeHtml(value) {
     .replace(/'/g, "&#039;");
 }
 
+function getOrCreateHoverCard() {
+  let card = document.getElementById("fc-hover-card");
+  if (!card) {
+    card = document.createElement("div");
+    card.id = "fc-hover-card";
+    card.className = "fc-hover-card";
+    document.body.appendChild(card);
+  }
+  return card;
+}
+
+function showHoverCard(element) {
+  const card = getOrCreateHoverCard();
+  const title = element.getAttribute("data-title") || element.innerText.trim();
+  const desc = element.getAttribute("data-explanation");
+  
+  card.innerHTML = `
+    <div class="fc-hover-card-title">${escapeHtml(title)}</div>
+    <div class="fc-hover-card-desc">${escapeHtml(desc)}</div>
+  `;
+  
+  card.classList.add("visible");
+  
+  // Calculate coordinates: center horizontally above the element
+  const rect = element.getBoundingClientRect();
+  const cardRect = card.getBoundingClientRect();
+  
+  let left = rect.left + (rect.width - cardRect.width) / 2;
+  let top = rect.top - cardRect.height - 12; // 12px gap
+  
+  // Viewport boundaries check
+  if (left < 10) left = 10;
+  if (left + cardRect.width > window.innerWidth - 10) {
+    left = window.innerWidth - cardRect.width - 10;
+  }
+  if (top < 10) {
+    // If it doesn't fit on top, position it below the element
+    top = rect.bottom + 12;
+  }
+  
+  card.style.left = `${left}px`;
+  card.style.top = `${top}px`;
+}
+
+function hideHoverCard() {
+  const card = document.getElementById("fc-hover-card");
+  if (card) {
+    card.classList.remove("visible");
+  }
+}
+
 document.addEventListener("DOMContentLoaded", () => {
   router.register("home", initHome);
   router.register("upload", initUpload);
   router.register("audit", initAudit);
   router.register("results", initResults);
   router.register("pipeline", () => {});
+  router.register("tech-stack", () => {});
+
+  // Set up pipeline hover card listeners via event delegation
+  document.addEventListener("mouseover", (event) => {
+    const target = event.target.closest("[data-explanation]");
+    if (target) {
+      showHoverCard(target);
+    }
+  });
+
+  document.addEventListener("mouseout", (event) => {
+    const target = event.target.closest("[data-explanation]");
+    if (target) {
+      hideHoverCard();
+    }
+  });
 
   document.querySelectorAll(".nav-item").forEach((item) => {
     item.addEventListener("click", () => {

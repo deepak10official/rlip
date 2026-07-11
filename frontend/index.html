@@ -50,6 +50,10 @@
           <span class="nav-icon">⚙️</span>
           <span class="nav-label">Pipeline</span>
         </a>
+        <a class="nav-item nav-stack" data-route="tech-stack">
+          <span class="nav-icon">🧱</span>
+          <span class="nav-label">Tech Stack</span>
+        </a>
       </nav>
 
       <div class="sidebar-footer">
@@ -130,8 +134,8 @@
             <div class="feature-card reveal premium-card">
               <div class="feature-icon-wrap premium-icon-wrap">🛡️</div>
               <div class="feature-title premium-feature-title">Guardrailed AI</div>
-              <div class="feature-desc premium-feature-desc">Every output is strictly validated by a Pydantic schema—eliminating hallucinated figures and unverified claims.</div>
-              <div class="feature-tag premium-feature-tag">guardrail_notes · structured_output</div>
+              <div class="feature-desc premium-feature-desc">Filters incoming queries to ensure they are within the financial audit scope, and validates final output reports for completeness, integrity, and source citations.</div>
+              <div class="feature-tag premium-feature-tag">scope_check · quality_audit</div>
             </div>
           </div>
         </section>
@@ -258,14 +262,14 @@
           <div class="fc-group fc-inputs premium-fc-group" style="border-color: var(--success); box-shadow: 0 4px 15px var(--success-dim);">
             <div class="fc-group-title" style="color: var(--success);">1. Data Ingestion</div>
             <div class="fc-row">
-              <div class="fc-node">📄 Service Agreement</div>
-              <div class="fc-node">🧾 Invoices</div>
-              <div class="fc-node">🔍 Billing Evidence</div>
-              <div class="fc-node">💳 Payment Records</div>
+              <div class="fc-node" data-title="Service Agreement" data-explanation="Contractual documents specifying agreed service scope, resource roles, hourly rates, discount structures, duplicate billing clauses, and SLA penalty rules.">📄 Service Agreement</div>
+              <div class="fc-node" data-title="Invoices" data-explanation="Billed document submitted by the contractor containing itemized entries of hours, material costs, base service fees, and total requested amounts.">🧾 Invoices</div>
+              <div class="fc-node" data-title="Billing Evidence" data-explanation="Primary operational logs confirming work performance: employee timesheets, API traffic counters, cloud compute hours, and completion receipts.">🔍 Billing Evidence</div>
+              <div class="fc-node" data-title="Payment Records" data-explanation="Ledger transaction entries, wire transfer records, bank receipts, and credit notes confirming previous financial settlements.">💳 Payment Records</div>
             </div>
           </div>
           
-          <div class="fc-arrow"></div>
+          <div class="fc-arrow fc-arrow-success"></div>
           
           <!-- AGENT ORCHESTRATOR WRAPPER -->
           <div class="fc-group fc-orchestrator premium-fc-group" style="border: 2px solid var(--accent-purple); background: linear-gradient(180deg, var(--warning-dim) 0%, transparent 100%); padding: 40px 20px; border-radius: var(--radius-xl); box-shadow: 0 8px 30px var(--warning-dim);">
@@ -274,54 +278,158 @@
             </div>
             
             <!-- 2. Pre-Execution Guardrail -->
-            <div class="fc-node fc-guardrails premium-fc-node" style="border-color: var(--error); background: var(--glass-bg); color: var(--text-primary); box-shadow: 0 4px 15px rgba(239, 68, 68, 0.1);">
-              🛡️ 2. billing_scope_guardrail
+            <div class="fc-node fc-guardrails premium-fc-node" style="border-color: var(--error); background: var(--glass-bg); color: var(--text-primary); box-shadow: 0 4px 15px rgba(239, 68, 68, 0.1);" data-title="Billing Scope Guardrail" data-explanation="Inspects incoming documents for required keywords such as invoice, rate, billing, contract, timesheet, and ledger. Stops the workflow immediately if the documents do not relate to financial audits, saving LLM resource usage.">
+              🛡️ 2. Billing Scope Guardrail
             </div>
-
-            <div class="fc-arrow"></div>
-
+ 
+            <div class="fc-arrow fc-arrow-agent"></div>
+ 
             <!-- 3. Agents -->
             <div class="fc-group fc-agents premium-fc-group" style="border-color: var(--glass-border); background: transparent;">
               <div class="fc-group-title" style="color: var(--text-secondary);">3. Multi-Agent Inference System</div>
-
-              <div class="fc-node fc-agent">👁️ Vision Extraction</div>
-              <div class="fc-arrow"></div>
-
-              <div class="fc-node fc-agent fc-context-router">🧭 Context Router</div>
-
-              <div class="fc-fork"></div>
-              <div class="fc-row fc-extraction">
-                <div class="fc-node fc-agent">📜 Contract Rules</div>
-                <div class="fc-node fc-agent fc-evidence-agent">🔎 Evidence Log Check</div>
-                <div class="fc-node fc-agent">💵 Payment Reconciliation</div>
+ 
+              <div class="fc-node fc-agent" data-title="Vision Extraction Agent" data-explanation="Applies multimodal LLMs to analyze PDF documents visually, extracting layout coordinates, table cells, handwritten notes, signature blocks, and itemized billing elements that text-only scrapers miss.">👁️ Vision Extraction Agent</div>
+              <div class="fc-arrow fc-arrow-agent"></div>
+ 
+              <div class="fc-node fc-agent fc-context-router" data-title="Context Router Agent" data-explanation="Determines the billing type (e.g., T&M, fixed-price, usage-based) and routes relevant document context to specialized agents.">🧭 Context Router Agent</div>
+ 
+              <div class="fc-fork">
+                <div class="fc-line-in"></div>
+                <div class="fc-line-left-h"></div>
+                <div class="fc-line-left-v"></div>
+                <div class="fc-line-mid-v"></div>
+                <div class="fc-line-right-h"></div>
+                <div class="fc-line-right-v"></div>
               </div>
-              <div class="fc-join"></div>
-
-              <div class="fc-node fc-agent">🧾 Invoice Discrepancy Engine</div>
+              <div class="fc-row fc-extraction">
+                <div class="fc-node fc-agent" data-title="Contract Rules Agent" data-explanation="Parses service agreements to map hourly rate caps, maximum billable hours per role, resource multipliers, volume discount tiers, duplicate invoicing policies, and late-payment penalty parameters.">📜 Contract Rules Agent</div>
+                <div class="fc-node fc-agent fc-evidence-agent" data-title="Evidence Log Check Agent" data-explanation="Extracts daily work records, timesheet clock-ins, API request logs, and cloud resource runtimes. Cross-checks these with the invoice line items to detect overbilled hours or unbilled milestones.">🔎 Evidence Log Check Agent</div>
+                <div class="fc-node fc-agent" data-title="Payment Reconciliation Agent" data-explanation="Matches unique billing IDs against historical payment receipts, bank wires, and accounts receivable ledgers. Flags double-payment attempts, unresolved underpayments, and paid invoices marked as active.">💵 Payment Reconciliation Agent</div>
+              </div>
+              <div class="fc-join">
+                <div class="fc-line-left-v"></div>
+                <div class="fc-line-left-h"></div>
+                <div class="fc-line-mid-v"></div>
+                <div class="fc-line-right-v"></div>
+                <div class="fc-line-right-h"></div>
+                <div class="fc-line-out"></div>
+              </div>
+ 
+              <div class="fc-node fc-agent" data-title="Invoice Discrepancy Engine Agent" data-explanation="Aggregates anomalies from contract rules, work logs, and payment reconciliations. Calculates the absolute variance amount and outputs a breakdown of leakage reasons (e.g., rate inflation, overbilling).">🧾 Invoice Discrepancy Engine Agent</div>
             </div>
-
-            <div class="fc-arrow"></div>
-
+ 
+            <div class="fc-arrow fc-arrow-guardrail"></div>
+ 
             <!-- 4. Post-Execution Guardrail -->
-            <div class="fc-node fc-guardrails premium-fc-node" style="border-color: var(--error); background: var(--glass-bg); color: var(--text-primary); box-shadow: 0 4px 15px rgba(239, 68, 68, 0.1);">
-              🛡️ 4. structured_output_quality_guardrail
+            <div class="fc-node fc-guardrails premium-fc-node" style="border-color: var(--error); background: var(--glass-bg); color: var(--text-primary); box-shadow: 0 4px 15px rgba(239, 68, 68, 0.1);" data-title="Structured Output Quality Guardrail" data-explanation="Verifies the final JSON output contains valid citations, check lists, and summaries. Confirms that if an invoice is marked invalid, a corrected draft structure and variance amount are fully populated.">
+              🛡️ 4. Structured Output Quality Guardrail
             </div>
             
-            <div class="fc-arrow"></div>
+            <div class="fc-arrow fc-arrow-success"></div>
             
             <!-- 5. Orchestrator Output -->
-            <div class="fc-node fc-output premium-fc-node" style="border-color: var(--success); background: var(--glass-bg); color: var(--text-primary); box-shadow: 0 4px 15px var(--success-dim);">
+            <div class="fc-node fc-output premium-fc-node" style="border-color: var(--success); background: var(--glass-bg); color: var(--text-primary); box-shadow: 0 4px 15px var(--success-dim);" data-title="Structured Verified Output" data-explanation="Outputs high-integrity Pydantic models containing key metrics: audit status, total variance amount, confidence score, finding severity levels, and specific contract clause citations.">
               ✨ 5. Structured Verified Output
             </div>
           </div>
           
-          <div class="fc-arrow"></div>
+          <div class="fc-arrow fc-arrow-synthesizer"></div>
           
           <!-- 6. Post-Orchestrator Synthesis -->
           <div class="fc-node fc-output premium-fc-node" style="border-color: var(--accent-blue); background: var(--glass-bg); color: var(--text-primary); box-shadow: 0 4px 15px rgba(124, 58, 237, 0.2);">
             📝 6. Report Synthesizer
           </div>
         </div>
+      </div>
+
+      <!-- ── Tech Stack ─────────────────────────────────────── -->
+      <div class="view" id="view-tech-stack">
+        <div class="page-header premium-page-header">
+          <h1>🧱 Tech Stack</h1>
+          <p>A clean view of the frameworks, SDKs, and models powering RLIP.</p>
+        </div>
+
+        <section class="stack-overview">
+          <article class="stack-section">
+            <div class="stack-section-header">
+              <span>Backend</span>
+              <small>API + validation runtime</small>
+            </div>
+            <div class="stack-logo-grid">
+              <div class="stack-logo-card">
+                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/python/python-original.svg" alt="Python logo">
+                <strong>Python</strong>
+                <span>Core runtime</span>
+              </div>
+              <div class="stack-logo-card">
+                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/fastapi/fastapi-original.svg" alt="FastAPI logo">
+                <strong>FastAPI</strong>
+                <span>REST backend</span>
+              </div>
+              <div class="stack-logo-card">
+                <img src="https://cdn.jsdelivr.net/npm/simple-icons@latest/icons/pydantic.svg" alt="Pydantic logo">
+                <strong>Pydantic</strong>
+                <span>Typed schemas</span>
+              </div>
+              <div class="stack-logo-card stack-letter-card">
+                <div class="stack-letter-logo">U</div>
+                <strong>Uvicorn</strong>
+                <span>ASGI server</span>
+              </div>
+            </div>
+          </article>
+
+          <article class="stack-section">
+            <div class="stack-section-header">
+              <span>AI + SDK</span>
+              <small>Agents and model calls</small>
+            </div>
+            <div class="stack-logo-grid stack-logo-grid-compact">
+              <div class="stack-logo-card">
+                <img src="https://cdn.jsdelivr.net/npm/simple-icons@latest/icons/openai.svg" alt="OpenAI logo">
+                <strong>OpenAI Models</strong>
+                <span>gpt-5.5 · gpt-5.4-mini</span>
+              </div>
+              <div class="stack-logo-card stack-letter-card">
+                <div class="stack-letter-logo">SDK</div>
+                <strong>Agents SDK</strong>
+                <span>openai-agents 0.18.0</span>
+              </div>
+            </div>
+            <div class="stack-chip-row" aria-label="SDK features">
+              <span>openai 2.44.0</span>
+              <span>Agent</span>
+              <span>Runner.run</span>
+              <span>trace</span>
+              <span>guardrails</span>
+              <span>session memory</span>
+            </div>
+          </article>
+
+          <article class="stack-section">
+            <div class="stack-section-header">
+              <span>Frontend</span>
+              <small>Vanilla browser app</small>
+            </div>
+            <div class="stack-logo-grid stack-logo-grid-compact">
+              <div class="stack-logo-card">
+                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/html5/html5-original.svg" alt="HTML5 logo">
+                <strong>HTML5</strong>
+                <span>Views</span>
+              </div>
+              <div class="stack-logo-card">
+                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/css3/css3-original.svg" alt="CSS3 logo">
+                <strong>CSS3</strong>
+                <span>Prismatic UI</span>
+              </div>
+              <div class="stack-logo-card">
+                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/javascript/javascript-original.svg" alt="JavaScript logo">
+                <strong>JavaScript</strong>
+                <span>SPA router</span>
+              </div>
+            </div>
+          </article>
+        </section>
       </div>
 
     </main>
