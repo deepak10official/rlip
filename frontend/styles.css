@@ -225,6 +225,10 @@ button {
   padding: 0;
 }
 
+.sidebar.collapsed .brand-logo {
+  justify-content: center;
+}
+
 .sidebar.collapsed .brand-text {
   max-width: 0;
   opacity: 0;
