@@ -255,8 +255,8 @@
         
         <div class="flowchart-container reveal visible premium-flowchart-container">
           <!-- 1. Inputs -->
-          <div class="fc-group fc-inputs premium-fc-group">
-            <div class="fc-group-title">1. Inputs</div>
+          <div class="fc-group fc-inputs premium-fc-group" style="border-color: var(--success); box-shadow: 0 4px 15px var(--success-dim);">
+            <div class="fc-group-title" style="color: var(--success);">1. Data Ingestion</div>
             <div class="fc-row">
               <div class="fc-node">📄 Service Agreement</div>
               <div class="fc-node">🧾 Invoices</div>
@@ -267,42 +267,59 @@
           
           <div class="fc-arrow"></div>
           
-          <!-- 2. Guardrails -->
-          <div class="fc-node fc-guardrails premium-fc-node">
-            🛡️ 2. Schema Validation Layer
-          </div>
-          
-          <div class="fc-arrow"></div>
-          
-          <!-- 3. Agents -->
-          <div class="fc-group fc-agents premium-fc-group">
-            <div class="fc-group-title">3. Multi-Agent Inference System</div>
-            
-            <div class="fc-node fc-agent">👁️ Vision Extraction</div>
-            <div class="fc-arrow"></div>
-            
-            <div class="fc-node fc-agent">🧭 Context Router</div>
-            
-            <div class="fc-fork"></div>
-            <div class="fc-row fc-extraction">
-              <div class="fc-node fc-agent">📜 Contract Rules</div>
-              <div class="fc-node fc-agent">🔎 Evidence Log Check</div>
-              <div class="fc-node fc-agent">💵 Payment Reconciliation</div>
+          <!-- AGENT ORCHESTRATOR WRAPPER -->
+          <div class="fc-group fc-orchestrator premium-fc-group" style="border: 2px solid var(--accent-purple); background: linear-gradient(180deg, var(--warning-dim) 0%, transparent 100%); padding: 40px 20px; border-radius: var(--radius-xl); box-shadow: 0 8px 30px var(--warning-dim);">
+            <div class="fc-group-title" style="color: var(--accent-purple); font-size: 1.2rem; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 30px; text-shadow: 0 0 10px var(--warning-dim);">
+              ⚙️ Agent Orchestrator
             </div>
-            <div class="fc-join"></div>
             
-            <div class="fc-node fc-agent">🧾 Invoice Discrepancy Engine</div>
+            <!-- 2. Pre-Execution Guardrail -->
+            <div class="fc-node fc-guardrails premium-fc-node" style="border-color: var(--error); background: var(--glass-bg); color: var(--text-primary); box-shadow: 0 4px 15px rgba(239, 68, 68, 0.1);">
+              🛡️ 2. billing_scope_guardrail
+            </div>
+
+            <div class="fc-arrow"></div>
+
+            <!-- 3. Agents -->
+            <div class="fc-group fc-agents premium-fc-group" style="border-color: var(--glass-border); background: transparent;">
+              <div class="fc-group-title" style="color: var(--text-secondary);">3. Multi-Agent Inference System</div>
+
+              <div class="fc-node fc-agent">👁️ Vision Extraction</div>
+              <div class="fc-arrow"></div>
+
+              <div class="fc-node fc-agent fc-context-router">🧭 Context Router</div>
+
+              <div class="fc-fork"></div>
+              <div class="fc-row fc-extraction">
+                <div class="fc-node fc-agent">📜 Contract Rules</div>
+                <div class="fc-node fc-agent fc-evidence-agent">🔎 Evidence Log Check</div>
+                <div class="fc-node fc-agent">💵 Payment Reconciliation</div>
+              </div>
+              <div class="fc-join"></div>
+
+              <div class="fc-node fc-agent">🧾 Invoice Discrepancy Engine</div>
+            </div>
+
+            <div class="fc-arrow"></div>
+
+            <!-- 4. Post-Execution Guardrail -->
+            <div class="fc-node fc-guardrails premium-fc-node" style="border-color: var(--error); background: var(--glass-bg); color: var(--text-primary); box-shadow: 0 4px 15px rgba(239, 68, 68, 0.1);">
+              🛡️ 4. structured_output_quality_guardrail
+            </div>
             
             <div class="fc-arrow"></div>
             
-            <div class="fc-node fc-agent">📊 Report Synthesizer</div>
+            <!-- 5. Orchestrator Output -->
+            <div class="fc-node fc-output premium-fc-node" style="border-color: var(--success); background: var(--glass-bg); color: var(--text-primary); box-shadow: 0 4px 15px var(--success-dim);">
+              ✨ 5. Structured Verified Output
+            </div>
           </div>
           
           <div class="fc-arrow"></div>
           
-          <!-- 4. Output -->
-          <div class="fc-node fc-output premium-fc-node">
-            ✨ 4. Structured Verified Output
+          <!-- 6. Post-Orchestrator Synthesis -->
+          <div class="fc-node fc-output premium-fc-node" style="border-color: var(--accent-blue); background: var(--glass-bg); color: var(--text-primary); box-shadow: 0 4px 15px rgba(124, 58, 237, 0.2);">
+            📝 6. Report Synthesizer
           </div>
         </div>
       </div>
